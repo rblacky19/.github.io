@@ -36,10 +36,34 @@
     header {
       padding: 52px 64px 0;
       display: flex;
-      align-items: baseline;
+      align-items: center;
       justify-content: space-between;
       gap: 24px;
       animation: fadeUp .6s ease both;
+    }
+
+    .header-identity {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--line);
+      flex-shrink: 0;
+    }
+
+    .avatar-placeholder {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--line);
+      border: 2px solid var(--line);
+      flex-shrink: 0;
     }
 
     .site-name {
@@ -347,7 +371,10 @@
 <body>
 
   <header>
-    <div class="site-name">Ruben <span>Verhelst</span></div>
+    <div class="header-identity">
+      <div class="avatar-placeholder"></div>
+      <div class="site-name">Ruben <span>Verhelst</span></div>
+    </div>
     <nav role="tablist">
       <button class="tab-btn active" role="tab" aria-selected="true" data-tab="projects">Projects</button>
       <button class="tab-btn" role="tab" aria-selected="false" data-tab="contact">Contact</button>
