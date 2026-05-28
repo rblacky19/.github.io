@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ruben Verhelst</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f5f0;
+      --surface: #ffffff;
+      --text: #1a1916;
+      --muted: #7a7770;
+      --accent: #2a2623;
+      --line: #e2dfd8;
+      --hover-bg: #f0ede6;
+      --sans: 'DM Sans', sans-serif;
+      --serif: 'DM Serif Display', serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-weight: 300;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      padding: 52px 64px 0;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 24px;
+      animation: fadeUp .6s ease both;
+    }
+
+    .site-name {
+      font-family: var(--serif);
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      letter-spacing: -.01em;
+      color: var(--text);
+    }
+
+    .site-name span {
+      font-style: italic;
+      color: var(--muted);
+    }
+
+    /* ── Nav ── */
+    nav {
+      display: flex;
+      gap: 0;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface);
+      padding: 4px;
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--sans);
+      font-size: .8rem;
+      font-weight: 400;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 7px 20px;
+      border-radius: 999px;
+      transition: background .2s, color .2s;
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active { background: var(--accent); color: #fff; }
+
+    /* ── Divider ── */
+    .divider {
+      height: 1px;
+      background: var(--line);
+      margin: 40px 64px 0;
+      animation: fadeUp .6s .1s ease both;
+    }
+
+    /* ── Main content ── */
+    main {
+      padding: 0 64px 80px;
+    }
+
+    /* ── Tab panels ── */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── Projects panel ── */
+    .projects-layout {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 0;
+      padding-top: 56px;
+    }
+
+    /* Sidebar */
+    .projects-sidebar {
+      padding-right: 40px;
+      border-right: 1px solid var(--line);
+    }
+
+    .sidebar-label {
+      font-size: .7rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .project-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .project-list li button {
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--sans);
+      font-size: .88rem;
+      font-weight: 300;
+      color: var(--muted);
+      padding: 9px 12px;
+      border-radius: 6px;
+      transition: background .15s, color .15s;
+      line-height: 1.4;
+    }
+
+    .project-list li button:hover {
+      background: var(--hover-bg);
+      color: var(--text);
+    }
+
+    .project-list li button.active {
+      background: var(--hover-bg);
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* Project detail */
+    .project-detail {
+      padding-left: 52px;
+      animation: fadeUp .3s ease both;
+    }
+
+    .project-detail .proj-eyebrow {
+      font-size: .7rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .project-detail h2 {
+      font-family: var(--serif);
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+
+    .project-detail .proj-description {
+      font-size: .95rem;
+      line-height: 1.8;
+      color: var(--muted);
+      max-width: 540px;
+      margin-bottom: 32px;
+    }
+
+    .project-visual {
+      width: 100%;
+      max-width: 640px;
+      aspect-ratio: 16/9;
+      background: var(--hover-bg);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: .8rem;
+      letter-spacing: .05em;
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+
+    .project-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .proj-links {
+      display: flex;
+      gap: 12px;
+    }
+
+    .proj-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: .8rem;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--text);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 18px;
+      transition: background .15s, border-color .15s;
+    }
+
+    .proj-link:hover { background: var(--hover-bg); border-color: var(--muted); }
+    .proj-link.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .proj-link.primary:hover { opacity: .85; }
+
+    /* ── Contact panel ── */
+    .contact-layout {
+      max-width: 600px;
+      padding-top: 64px;
+    }
+
+    .about-block {
+      margin-bottom: 60px;
+    }
+
+    .about-block .eyebrow {
+      font-size: .7rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .about-block h2 {
+      font-family: var(--serif);
+      font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+      line-height: 1.25;
+      margin-bottom: 18px;
+    }
+
+    .about-block p {
+      font-size: .95rem;
+      line-height: 1.85;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .contact-block .eyebrow {
+      font-size: .7rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--line);
+      text-decoration: none;
+      color: var(--text);
+      transition: background .15s;
+    }
+
+    .contact-row:last-child { border-bottom: none; }
+    .contact-row:hover { background: var(--hover-bg); }
+
+    .contact-row-left {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .contact-row-label {
+      font-size: .7rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .contact-row-value {
+      font-size: .9rem;
+      font-weight: 400;
+    }
+
+    .contact-arrow {
+      color: var(--muted);
+      font-size: 1rem;
+      transition: transform .2s;
+    }
+
+    .contact-row:hover .contact-arrow { transform: translate(3px, -3px); }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .tab-panel.active .projects-layout,
+    .tab-panel.active .contact-layout {
+      animation: fadeUp .35s ease both;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 680px) {
+      header { padding: 32px 24px 0; flex-direction: column; gap: 16px; }
+      .divider { margin: 24px 24px 0; }
+      main { padding: 0 24px 60px; }
+      .projects-layout { grid-template-columns: 1fr; gap: 32px; }
+      .projects-sidebar { border-right: none; border-bottom: 1px solid var(--line); padding-right: 0; padding-bottom: 24px; }
+      .project-detail { padding-left: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="site-name">Ruben <span>Verhelst</span></div>
+    <nav role="tablist">
+      <button class="tab-btn active" role="tab" aria-selected="true" data-tab="projects">Projects</button>
+      <button class="tab-btn" role="tab" aria-selected="false" data-tab="contact">Contact</button>
+    </nav>
+  </header>
+
+  <div class="divider"></div>
+
+  <main>
+
+    <!-- ── Projects ── -->
+    <section id="tab-projects" class="tab-panel active" role="tabpanel">
+      <div class="projects-layout">
+
+        <aside class="projects-sidebar">
+          <p class="sidebar-label">Select a project</p>
+          <ul class="project-list" role="list">
+            <li><button class="active" data-project="osm">Building city from OSM data</button></li>
+            <li><button data-project="llm">Comparing LLM-Driven Pipelines for FPS Levels</button></li>
+            <li><button data-project="remesh">Pipeline for batch remeshing clothing assets</button></li>
+            <li><button data-project="graphics">My graphics work</button></li>
+            <li><button data-project="other">Other projects</button></li>
+          </ul>
+        </aside>
+
+        <div class="project-detail" id="project-detail">
+          <!-- Filled by JS -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── Contact ── -->
+    <section id="tab-contact" class="tab-panel" role="tabpanel">
+      <div class="contact-layout">
+
+        <div class="about-block">
+          <p class="eyebrow">About</p>
+          <h2>Hi, I'm Ruben.</h2>
+          <p>
+            A short bio about yourself goes here — what you work on, what you're interested in, and what kind of work you're looking for or open to.
+          </p>
+          <p>
+            You can mention your background, tools you use, or anything else that gives visitors a sense of who you are.
+          </p>
+        </div>
+
+        <div class="contact-block">
+          <p class="eyebrow">Get in touch</p>
+          <div class="contact-links">
+            <a class="contact-row" href="mailto:your@email.com">
+              <div class="contact-row-left">
+                <span class="contact-row-label">Email</span>
+                <span class="contact-row-value">your@email.com</span>
+              </div>
+              <span class="contact-arrow">↗</span>
+            </a>
+            <a class="contact-row" href="https://github.com/yourhandle" target="_blank" rel="noopener">
+              <div class="contact-row-left">
+                <span class="contact-row-label">GitHub</span>
+                <span class="contact-row-value">github.com/yourhandle</span>
+              </div>
+              <span class="contact-arrow">↗</span>
+            </a>
+            <a class="contact-row" href="https://linkedin.com/in/yourhandle" target="_blank" rel="noopener">
+              <div class="contact-row-left">
+                <span class="contact-row-label">LinkedIn</span>
+                <span class="contact-row-value">linkedin.com/in/yourhandle</span>
+              </div>
+              <span class="contact-arrow">↗</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // ── Project data ──────────────────────────────────────────
+    const projects = {
+      osm: {
+        title: 'Building a city from OSM data',
+        tags: ['Procedural', 'GIS', '3D'],
+        description: 'A short description of this project goes here. What was the goal, what did you build, and what was interesting or challenging about it?',
+        image: null,
+        links: [
+          { label: 'View project', href: '#', primary: true },
+          { label: 'GitHub', href: '#' }
+        ]
+      },
+      llm: {
+        title: 'Comparing LLM-Driven Pipelines for FPS Levels',
+        tags: ['LLM', 'Procedural generation', 'Research'],
+        description: 'A short description of this project goes here. What was the goal, what did you build, and what was interesting or challenging about it?',
+        image: null,
+        links: [
+          { label: 'View project', href: '#', primary: true },
+          { label: 'Paper', href: '#' }
+        ]
+      },
+      remesh: {
+        title: 'Pipeline for batch remeshing clothing assets',
+        tags: ['Pipeline', '3D', 'Automation'],
+        description: 'A short description of this project goes here. What was the goal, what did you build, and what was interesting or challenging about it?',
+        image: null,
+        links: [
+          { label: 'View project', href: '#', primary: true },
+          { label: 'GitHub', href: '#' }
+        ]
+      },
+      graphics: {
+        title: 'My graphics work',
+        tags: ['Graphics', 'Rendering', 'Art'],
+        description: 'A short description of this project goes here. What was the goal, what did you build, and what was interesting or challenging about it?',
+        image: null,
+        links: [
+          { label: 'View gallery', href: '#', primary: true }
+        ]
+      },
+      other: {
+        title: 'Other projects',
+        tags: ['Various'],
+        description: 'A collection of smaller experiments, side projects, and work-in-progress pieces.',
+        image: null,
+        links: [
+          { label: 'GitHub', href: '#', primary: true }
+        ]
+      }
+    };
+
+    // ── Render project detail ──────────────────────────────────
+    function renderProject(key) {
+      const p = projects[key];
+      const detail = document.getElementById('project-detail');
+
+      const tagsHtml = p.tags.map(t =>
+        `<span style="font-size:.7rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-right:14px;">${t}</span>`
+      ).join('');
+
+      const visualHtml = p.image
+        ? `<div class="project-visual"><img src="${p.image}" alt="${p.title}"></div>`
+        : `<div class="project-visual">Add an image or screenshot here</div>`;
+
+      const linksHtml = p.links.map(l =>
+        `<a class="proj-link${l.primary ? ' primary' : ''}" href="${l.href}">${l.label}</a>`
+      ).join('');
+
+      detail.innerHTML = `
+        <p class="proj-eyebrow">${tagsHtml}</p>
+        <h2>${p.title}</h2>
+        <p class="proj-description">${p.description}</p>
+        ${visualHtml}
+        <div class="proj-links">${linksHtml}</div>
+      `;
+
+      detail.style.animation = 'none';
+      detail.offsetHeight;
+      detail.style.animation = '';
+    }
+
+    // ── Tab switching ─────────────────────────────────────────
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => {
+          b.classList.remove('active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+        document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+      });
+    });
+
+    // ── Project sidebar ───────────────────────────────────────
+    document.querySelectorAll('.project-list button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.project-list button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderProject(btn.dataset.project);
+      });
+    });
+
+    // Init
+    renderProject('osm');
+  </script>
+
+</body>
+</html>
