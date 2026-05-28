@@ -390,6 +390,27 @@
       margin-top: 1px;
     }
 
+    .cv-download-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      width: 100%;
+      font-family: var(--sans);
+      font-size: .78rem;
+      font-weight: 400;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--text);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px 16px;
+      transition: background .15s, border-color .15s;
+    }
+
+    .cv-download-btn:hover { background: var(--hover-bg); border-color: var(--muted); }
+
     .contact-block .eyebrow {
       font-size: .7rem;
       letter-spacing: .1em;
@@ -591,6 +612,11 @@
               ruben.vrh@hotmail.com
             </div>
           </div>
+          <div class="profile-card-divider"></div>
+          <a class="cv-download-btn" href="Ruben_Verhelst_CV.pdf" download="Ruben_Verhelst_CV.pdf">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download CV
+          </a>
         </div>
 
       </div>
