@@ -469,6 +469,200 @@
 
     .contact-row:hover .contact-arrow { transform: translate(3px, -3px); }
 
+    /* ── Thesis detail sections ── */
+    .thesis-section {
+      margin-top: 40px;
+      padding-top: 32px;
+      border-top: 1px solid var(--line);
+    }
+
+    .thesis-section-label {
+      font-size: .68rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .thesis-section-heading {
+      font-family: var(--serif);
+      font-size: clamp(1.05rem, 1.8vw, 1.35rem);
+      line-height: 1.25;
+      margin-bottom: 14px;
+    }
+
+    .thesis-section-text {
+      font-size: .92rem;
+      line-height: 1.9;
+      color: var(--muted);
+      max-width: 580px;
+    }
+
+    .thesis-pipeline-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 24px;
+      max-width: 640px;
+    }
+
+    .thesis-pipeline-step {
+      background: var(--hover-bg);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+    }
+
+    .thesis-step-number {
+      font-size: .65rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .thesis-step-name {
+      font-size: .82rem;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.3;
+      margin-bottom: 5px;
+    }
+
+    .thesis-step-desc {
+      font-size: .74rem;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+
+    .thesis-media-block {
+      margin-top: 24px;
+      max-width: 580px;
+    }
+
+    .thesis-media-block + .thesis-media-block {
+      margin-top: 14px;
+    }
+
+    .thesis-media-container {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--hover-bg);
+    }
+
+    .thesis-media-container img {
+      width: 100%;
+      display: block;
+    }
+
+    .thesis-media-caption {
+      margin-top: 8px;
+      font-size: .75rem;
+      color: var(--muted);
+      letter-spacing: .02em;
+    }
+
+    .thesis-image-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 24px;
+      max-width: 580px;
+    }
+
+    .thesis-image-grid-item {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--hover-bg);
+    }
+
+    .thesis-image-grid-item img {
+      width: 100%;
+      display: block;
+    }
+
+    .thesis-image-grid-label {
+      padding: 7px 10px;
+      font-size: .67rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+    }
+
+    .thesis-screenshot-placeholder {
+      margin-top: 24px;
+      max-width: 580px;
+      border: 1px dashed var(--line);
+      border-radius: 10px;
+      padding: 32px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+    }
+
+    .thesis-screenshot-placeholder p {
+      font-size: .76rem;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    .thesis-takeaway {
+      margin-top: 20px;
+      max-width: 580px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      padding: 18px 20px;
+    }
+
+    .thesis-takeaway p {
+      font-size: .9rem;
+      line-height: 1.75;
+      color: var(--text);
+      font-style: italic;
+      font-family: var(--serif);
+    }
+
+    .thesis-links {
+      margin-top: 40px;
+      padding-top: 32px;
+      border-top: 1px solid var(--line);
+    }
+
+    /* ── Graphics gallery ── */
+    .graphics-gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 24px;
+      max-width: 640px;
+    }
+
+    .graphics-gallery-item {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--hover-bg);
+    }
+
+    .graphics-gallery-item a {
+      display: block;
+    }
+
+    .graphics-gallery-item img {
+      width: 100%;
+      display: block;
+      transition: opacity .15s;
+    }
+
+    .graphics-gallery-item img:hover { opacity: .82; }
+
     /* ── Animations ── */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(12px); }
@@ -490,6 +684,9 @@
       .project-detail { padding-left: 0; }
       .contact-layout { grid-template-columns: 1fr; gap: 40px; }
       .profile-card { max-width: 100%; }
+      .thesis-pipeline-steps { grid-template-columns: repeat(2, 1fr); }
+      .thesis-image-grid { grid-template-columns: 1fr; }
+      .graphics-gallery { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
@@ -543,16 +740,16 @@
             <h2>Hi, I'm Ruben.</h2>
             <p class="about-subtitle">MSc Game Technologies</p>
             <p>
-              I have 7+ years of experience specialising in procedural workflows, pipeline automation, and asset optimisation. I bridge the gap between art and technology — building tools and systems that make production faster and smarter.
+              7+ years working on procedural workflows, pipeline automation, and asset optimisation. I build tools that sit between the art and tech sides of production.
             </p>
             <p>
-              My work spans procedural generation in Houdini, scripting pipelines in Python and C#, 3D modelling and texturing in Blender, Maya, and Substance Painter, and technical research into LLM-driven content generation.
+              Houdini for procedural generation, Python and C# for tooling, Blender and Maya for modelling, Substance Painter for texturing. My thesis research covered LLM-driven level generation for CS2.
             </p>
 
             <p class="education-heading">Education</p>
             <ul class="education-list">
               <li>
-                Bachelor Digital Arts and Entertainment — minor: Game Graphics Production<br>
+                Bachelor Digital Arts and Entertainment, minor in Game Graphics Production<br>
                 <span>@Howest</span>
               </li>
               <li>
@@ -631,8 +828,9 @@
       osm: {
         title: 'Building a city from Open Street Map data',
         tags: ['Procedural', 'Houdini', '3D', 'Unreal Engine 5', 'Automation'],
-        description: 'For this Group Project at DAE, we made a pipeline to convert open source street map date into playable Unreal Engine worlds. The goal of this was to provide a simulation space to train AI on real cities',
+        description: 'Group project at DAE where we built a pipeline to convert OpenStreetMap data into playable Unreal Engine worlds, to use as a simulation space for training AI on real city layouts.',
         image: null,
+        youtube: 'UOnAdeKg5Bk',
         links: [
           { label: 'View project', href: '#', primary: true },
           { label: 'GitHub', href: '#' }
@@ -644,14 +842,14 @@
         description: 'For my Masters Thesis I investigated the capabilities of Large Language Models to build Counter Strike 2 map blockouts from a simple text prompt',
         image: null,
         links: [
-          { label: 'View project', href: '#', primary: true },
-          { label: 'Paper', href: '#' }
+          { label: 'Paper', href: '#', primary: true },
+          { label: 'GitHub', href: '#' }
         ]
       },
       remesh: {
         title: 'Pipeline for batch remeshing clothing assets',
         tags: ['Pipeline automation', '3D', 'Remeshing', 'Batch asset processing'],
-        description: 'For my internship and my position as a technical artist after that, I researched and set up a pipeline that converts a batch of clothing assets to a lower-poly alternative. I did this by using the Quad Remesher plugin in Blender with additional UI and batch processing tools. ',
+        description: 'During my internship and the technical artist role that followed, I built a pipeline to batch-convert clothing assets to lower-poly versions. Built on the Quad Remesher plugin in Blender with custom UI and batch processing on top.',
         image: null,
         links: [
           { label: 'View project', href: '#', primary: true },
@@ -670,7 +868,7 @@
       other: {
         title: 'Other projects',
         tags: ['Various'],
-        description: 'A collection of smaller experiments, side projects, and work-in-progress pieces.',
+        description: 'Smaller experiments, tools, and stuff I built along the way.',
         image: null,
         links: [
           { label: 'GitHub', href: '#', primary: true }
@@ -687,9 +885,11 @@
         `<span style="font-size:.7rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-right:14px;">${t}</span>`
       ).join('');
 
-      const visualHtml = p.image
-        ? `<div class="project-visual"><img src="${p.image}" alt="${p.title}"></div>`
-        : `<div class="project-visual">Add an image or screenshot here</div>`;
+      const visualHtml = p.youtube
+        ? `<div class="project-visual" style="padding:0;background:none;border:none;"><iframe width="100%" height="100%" src="https://www.youtube.com/embed/${p.youtube}" title="${p.title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="border-radius:10px;display:block;"></iframe></div>`
+        : p.image
+          ? `<div class="project-visual"><img src="${p.image}" alt="${p.title}"></div>`
+          : `<div class="project-visual">Add an image or screenshot here</div>`;
 
       const linksHtml = p.links.map(l =>
         `<a class="proj-link${l.primary ? ' primary' : ''}" href="${l.href}">${l.label}</a>`
@@ -701,6 +901,511 @@
         <p class="proj-description">${p.description}</p>
         ${visualHtml}
         <div class="proj-links">${linksHtml}</div>
+      `;
+
+      detail.style.animation = 'none';
+      detail.offsetHeight;
+      detail.style.animation = '';
+    }
+
+    // ── Thesis project detail ──────────────────────────────────
+    function renderThesisProject() {
+      const detail = document.getElementById('project-detail');
+      const tagSpan = t => `<span style="font-size:.7rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-right:14px;">${t}</span>`;
+
+      detail.innerHTML = `
+        <p class="proj-eyebrow">${['LLM','Procedural Generation','Research','Masters Thesis','CS2','Hammer Editor'].map(tagSpan).join('')}</p>
+        <h2>Comparing LLM-Driven Pipelines for FPS Level Layout Generation</h2>
+        <p class="proj-description">For my master's thesis I looked at whether LLMs can generate playable CS2 map blockouts from a text prompt. I built two pipelines and ran each using Claude Sonnet 4.5 and GPT-5.2, generating two levels per pipeline from the same brief. Those four AI-generated levels were then assessed alongside two levels made by expert CS2 community designers.</p>
+
+        <div class="thesis-section">
+          <p class="thesis-section-label">Foundation</p>
+          <h3 class="thesis-section-heading">The shared four-step chain</h3>
+          <p class="thesis-section-text">Both pipelines run the same four-step LLM chain to convert a natural language prompt into a layout JSON: a structured document describing the level as a grid, with zones at normalised coordinates and parameters for connectivity style, cover density, and sightline control. The chain is identical across both pipelines. What differs completely is what happens to that JSON next. In Pipeline 1 the coordinate and shape data becomes the map geometry directly. In Pipeline 2 only the high-level parameters are kept and the geometry is thrown out and recomputed by a solver.</p>
+          <div class="thesis-pipeline-steps">
+            <div class="thesis-pipeline-step">
+              <p class="thesis-step-number">Step 1</p>
+              <p class="thesis-step-name">Intent Parsing</p>
+              <p class="thesis-step-desc">Extracts design goals and explicit constraints from the text prompt.</p>
+            </div>
+            <div class="thesis-pipeline-step">
+              <p class="thesis-step-number">Step 2</p>
+              <p class="thesis-step-name">Spatial Planning</p>
+              <p class="thesis-step-desc">Produces an initial layout with zone positions at normalised coordinates and an overall lane structure.</p>
+            </div>
+            <div class="thesis-pipeline-step">
+              <p class="thesis-step-number">Step 3</p>
+              <p class="thesis-step-name">Tactical Analysis</p>
+              <p class="thesis-step-desc">Reviews the proposed layout for chokepoints, sightlines, and team balance.</p>
+            </div>
+            <div class="thesis-pipeline-step">
+              <p class="thesis-step-number">Step 4</p>
+              <p class="thesis-step-name">JSON Generation</p>
+              <p class="thesis-step-desc">Outputs the layout JSON. In Pipeline 1 this defines the actual geometry. In Pipeline 2 these become parameters for the solver.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="thesis-section">
+          <p class="thesis-section-label">Pipeline 1</p>
+          <h3 class="thesis-section-heading">The LLM defines the geometry</h3>
+          <p class="thesis-section-text">In Pipeline 1 the four-step LLM chain is responsible for all spatial decisions. The layout JSON it outputs contains the actual zone coordinates, shapes, and placements that will appear in the final map. A converter reads that JSON and builds the CS2 map file from it directly: floor geometry, walls, bomb site triggers, spawn points, and basic lighting, all taken straight from whatever the model specified. Nothing is verified or adjusted. If the model put two zones on top of each other or left a bomb site with no reachable path, that ends up in the map.</p>
+          <div class="thesis-media-block">
+            <div class="thesis-media-container">
+              <img src="assets/thesis/pipeline1.gif" alt="Pipeline 1 in action" loading="lazy">
+            </div>
+            <p class="thesis-media-caption">Pipeline 1: the LLM chain generating a layout JSON that goes directly to the CS2 map converter.</p>
+          </div>
+        </div>
+
+        <div class="thesis-section">
+          <p class="thesis-section-label">Pipeline 2</p>
+          <h3 class="thesis-section-heading">The solver handles the geometry</h3>
+          <p class="thesis-section-text">In Pipeline 2 the same four-step chain runs, but the layout JSON it produces is treated as a parameter list rather than geometry. The positional coordinates serve only as loose hints; a procedural solver takes the high-level parameters (lane structure, cover density, sightline control, zone and objective assignments) and recomputes all the geometry algorithmically from scratch. Because the solver is responsible for the spatial decisions rather than the LLM, the output is predictable: every zone is guaranteed reachable, nothing overlaps, and all corridors meet minimum width requirements. The LLM defines what the level should contain; the solver works out where and how.</p>
+          <div class="thesis-media-block">
+            <div class="thesis-media-container">
+              <img src="assets/thesis/pipeline2-agents.gif" alt="Pipeline 2 agent step" loading="lazy">
+            </div>
+            <p class="thesis-media-caption">Pipeline 2: the four-step LLM chain producing the layout parameter JSON.</p>
+          </div>
+          <div class="thesis-media-block">
+            <div class="thesis-media-container">
+              <img src="assets/thesis/pipeline2-solver.gif" alt="Pipeline 2 solver step" loading="lazy">
+            </div>
+            <p class="thesis-media-caption">The procedural solver building the level geometry from the parameter JSON.</p>
+          </div>
+        </div>
+
+        <div class="thesis-section">
+          <p class="thesis-section-label">Output</p>
+          <h3 class="thesis-section-heading">From JSON to playable map</h3>
+          <p class="thesis-section-text">Both pipelines feed their final JSON into the same converter, which translates it into a VMAP file for Valve's Hammer Editor. It outputs floor and wall meshes, bomb site trigger volumes, team spawn points, and basic lighting. The levels were then uploaded to the Steam Workshop so evaluators could download and play them in CS2 directly, rather than assessing from top-down views alone.</p>
+          <div class="thesis-media-block">
+            <div class="thesis-media-container">
+              <img src="assets/thesis/json-to-vmap.png" alt="JSON to VMAP converter" loading="lazy">
+            </div>
+            <p class="thesis-media-caption">The JSON-to-VMAP converter producing a Hammer Editor map file from the layout JSON.</p>
+          </div>
+          <div class="thesis-media-block">
+            <div class="thesis-media-container">
+              <img src="assets/thesis/inengine-pipeline2.png" alt="Pipeline 2 level loaded in Hammer Editor" loading="lazy">
+            </div>
+            <p class="thesis-media-caption">A Pipeline 2 level inside Hammer Editor. The grey tile grid is the solver-generated floor geometry; the dark areas are outside the map boundary. Loading the output here allowed the levels to be compiled and playtested in CS2.</p>
+          </div>
+        </div>
+
+        <div class="thesis-section">
+          <p class="thesis-section-label">Results</p>
+          <h3 class="thesis-section-heading">What the experts found</h3>
+          <p class="thesis-section-text">Three expert evaluators from the CS2 mapping community assessed all six levels blind: two from Pipeline 1 (one per model), two from Pipeline 2 (one per model), and two human-designed baselines. Pipeline 1 failed on functional validity: the GPT-5.2 level had no spawn points at all, and the Claude level had bomb sites neither team could reach without going straight through the middle. Pipeline 2's solver fixed those issues, but all four AI-generated levels were still unanimously identified as AI-made. The three evaluators reached the same conclusion independently, through different framings: the AI outputs reproduce the surface appearance of an FPS map without the spatial logic that makes one work. One evaluator called it "spaghetti design" — bombsites and a mid connected by corridors, when what you actually need are corridors AND areas that carry tactical meaning on their own. None of the AI outputs got close to that.</p>
+          <div class="thesis-image-grid">
+            <div class="thesis-image-grid-item">
+              <img src="assets/thesis/topdown-human.png" alt="Top-down: human-designed level" loading="lazy">
+              <p class="thesis-image-grid-label">Human level</p>
+            </div>
+            <div class="thesis-image-grid-item">
+              <img src="assets/thesis/topdown-llm.png" alt="Top-down: Pipeline 1 output" loading="lazy">
+              <p class="thesis-image-grid-label">Pipeline 1 (LLM only)</p>
+            </div>
+            <div class="thesis-image-grid-item">
+              <img src="assets/thesis/topdown-solver.png" alt="Top-down: solver-assisted output" loading="lazy">
+              <p class="thesis-image-grid-label">Pipeline 2 (solver-assisted)</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="thesis-section">
+          <p class="thesis-section-label">Takeaway</p>
+          <h3 class="thesis-section-heading">Key takeaway</h3>
+          <p class="thesis-section-text">Pipeline 2 proved that structural validity can be engineered around the LLM's spatial limitations. It also showed that structural validity isn't design. Reachability, non-overlapping geometry, sightline control: the solver can guarantee all of those. What it can't guarantee is three-lane structural logic, areas with their own tactical meaning, or a layout a player can read at a glance. Those patterns live in the heads of experienced designers, and current LLMs don't encode them.</p>
+          <div class="thesis-takeaway">
+            <p>Structural validity can be engineered. Tactical intent cannot — at least not yet.</p>
+          </div>
+        </div>
+
+        <div class="proj-links thesis-links">
+          <a class="proj-link primary" href="#">View Paper ↗</a>
+          <a class="proj-link" href="#">GitHub ↗</a>
+        </div>
+      `;
+
+      detail.style.animation = 'none';
+      detail.offsetHeight;
+      detail.style.animation = '';
+    }
+
+    // ── Graphics project detail ───────────────────────────────
+    function renderGraphicsProject() {
+      const detail = document.getElementById('project-detail');
+      const tagSpan = t => `<span style="font-size:.7rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-right:14px;">${t}</span>`;
+
+      const galleryItems = [
+        ['design-games-monday.jpg',    'Games Monday event banner — 3D arcade scene'],
+        ['design-galabal-poster.jpg',  'Galabal formal event poster'],
+        ['design-galabal-banner.jpg',  'Galabal banner'],
+        ['design-kiekenfuif.jpg',      'Kiekenfuif event poster'],
+        ['design-bday-bash.jpg',       'STYX birthday bash poster'],
+        ['design-centaura-bbq.jpg',    'Centaura BBQ event poster'],
+        ['design-duke-charles.jpg',    'Duke Charles Festival banner'],
+        ['design-croq-bass.jpg',       'Crazy Croq and Bass Monday poster'],
+        ['design-hypnowest.jpg',       'Hypnowest event poster'],
+        ['design-long-island.jpg',     'Long Island Iced Tea drink promo'],
+        ['design-koltruien.jpg',       'Hooded sweatshirt product mockup'],
+        ['design-sw-crew.jpg',         'SW crew t-shirt design'],
+        ['design-tetap-logo.jpg',      'Tetap logo concept variations'],
+        ['design-lidkaart.png',        'Centaura membership card design'],
+        ['design-partnership.png',     'Centaura partnership flyer'],
+        ['design-centaura-v2.jpg',     'Centaura promotional flyer'],
+        ['design-boekenverkoop.png',   'Book sale event banner'],
+        ['design-how-boekenverkoop.png','Book sale instructional poster'],
+        ['design-enquete.png',         'University survey poster'],
+        ['design-weekoverzicht.png',   'Weekly events schedule'],
+      ];
+
+      const galleryHtml = galleryItems.map(([file, alt]) => `
+        <div class="graphics-gallery-item">
+          <a href="assets/graphics/${file}" target="_blank" rel="noopener">
+            <img src="assets/graphics/${file}" alt="${alt}" loading="lazy">
+          </a>
+        </div>`).join('');
+
+      detail.innerHTML = `
+        <p class="proj-eyebrow">${['3D Modelling','Graphic Design','Blender','Photoshop','Marketing'].map(tagSpan).join('')}</p>
+        <h2>My graphics work</h2>
+        <p class="proj-description">A selection of 3D modelling and graphic design work. The 3D pieces are personal projects built from scratch. The design work is mostly client and commission work for events, student organisations, and brands around Kortrijk.</p>
+
+        <div class="thesis-section">
+          <p class="thesis-section-label">3D work</p>
+          <h3 class="thesis-section-heading">Sneaker — original game-ready 3D model</h3>
+          <p class="thesis-section-text">A fully original sneaker modelled, UV-unwrapped, and textured from scratch to game-ready specifications. Not just built for a render — the mesh topology and texture maps meet real-time asset requirements. The presentation was put together in post with typographic composition.</p>
+          <div class="thesis-media-block" style="max-width:520px;">
+            <div class="thesis-media-container">
+              <img src="assets/graphics/sneaker-model.jpg" alt="Original game-ready 3D sneaker model" loading="lazy">
+            </div>
+          </div>
+        </div>
+
+        <div class="thesis-section">
+          <p class="thesis-section-label">3D work</p>
+          <h3 class="thesis-section-heading">Toyota 2000 GT — original high-poly 3D models</h3>
+          <p class="thesis-section-text">Both cars in this poster are original high-poly models I built. The Toyota 2000 GT is a particularly demanding model because of its curved, organic bodywork and the precision required for the period-correct detailing. The poster was composed around the models with cinematic lighting and a painted background to get the racing feel.</p>
+          <div class="thesis-media-block" style="max-width:420px;">
+            <div class="thesis-media-container">
+              <img src="assets/graphics/toyota-car.jpg" alt="Original high-poly Toyota 2000 GT 3D models" loading="lazy">
+            </div>
+          </div>
+        </div>
+
+        <div class="thesis-section">
+          <p class="thesis-section-label">Graphic design</p>
+          <h3 class="thesis-section-heading">Event posters and client work</h3>
+          <p class="thesis-section-text">Posters, banners, flyers, product mockups, and branding work — mostly for Centaura (the Howest & UGent student organisation) and associated events. Click any image to open full size.</p>
+          <div class="graphics-gallery">
+            ${galleryHtml}
+          </div>
+        </div>
+
+        <div class="proj-links thesis-links">
+          <a class="proj-link primary" href="https://www.artstation.com/artwork/LR94qk" target="_blank" rel="noopener">ArtStation — car model ↗</a>
+        </div>
+      `;
+
+      detail.style.animation = 'none';
+      detail.offsetHeight;
+      detail.style.animation = '';
+    }
+
+    // ── OSM project detail ────────────────────────────────────
+    function renderOSMProject() {
+      const detail = document.getElementById('project-detail');
+      const tagSpan = t => `<span style="font-size:.7rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-right:14px;">${t}</span>`;
+
+      detail.innerHTML = `
+        <p class="proj-eyebrow">${['Procedural Generation','Houdini','Unreal Engine 5','OpenStreetMap','Python','3D'].map(tagSpan).join('')}</p>
+        <h2>Building a City from OpenStreetMap Data</h2>
+        <p class="proj-description">Group project at DAE with a seven-person team. The goal was a procedurally generated Unreal Engine 5 tram simulation of Ghent, built from real OpenStreetMap data, to serve as a training environment for OTIV's AI systems. I was one of three Houdini artists on the team. My contributions were the biome generator, the empty square and parking generators, the road mesh HDA, and the parallax storefronts for commercial buildings. I also did some work on the tram spline generator.</p>
+
+        <div class="thesis-media-block" style="max-width:640px; margin-top:28px;">
+          <div style="aspect-ratio:16/9; border:1px solid var(--line); border-radius:10px; overflow:hidden; background:var(--hover-bg);">
+            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/UOnAdeKg5Bk" title="OTIV Tram Simulation" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="display:block;"></iframe>
+          </div>
+        </div>
+
+        <div class="thesis-section">
+          <p class="thesis-section-label">The challenge</p>
+          <h3 class="thesis-section-heading">The data is technically free, practically unusable</h3>
+          <p class="thesis-section-text">OpenStreetMap gives you real city geometry as open data. It also gives you road curves that don't close cleanly, building footprints that overlap, and inconsistent tag classifications. Two industry veterans specifically told our team lead not to bother: Christian Sirois, Senior Technical Artist at Epic Games who worked on The Matrix Awakens, and Faruk Helplevent, a specialist in OSM city generation. We built a pipeline that does it anyway.</p>
+          <div class="thesis-takeaway" style="margin-top:20px;">
+            <p>"We gave up trying to use OSM data for Matrix Awakens because it was not usable."</p>
+          </div>
+          <p style="font-size:.75rem;color:var(--muted);margin-top:6px;letter-spacing:.02em;">Christian Sirois — Senior Technical Artist, Epic Games</p>
+          <div class="thesis-takeaway" style="margin-top:16px;">
+            <p>"Hi Akio, you need to build the roads yourself. OSM data is too messy. Wish you success with the project."</p>
+          </div>
+          <p style="font-size:.75rem;color:var(--muted);margin-top:6px;letter-spacing:.02em;">Faruk Helplevent — City Generation with OSM, The Scope</p>
+        </div>
+
+        <div class="thesis-section">
+          <p class="thesis-section-label">Pipeline</p>
+          <h3 class="thesis-section-heading">From raw OSM to playable city</h3>
+          <p class="thesis-section-text">OSM data arrives as geometry with metadata attached: road type, building use, zone classification. The team's Houdini pipeline filters and cleans those tags, extracts road splines and building footprints, and runs them through a chain of HDAs before a Python exporter pushes everything into Unreal Engine 5. The OSM preprocessing, island generation, residential and commercial building generators, and Python exporter were built by my teammates. My contributions are covered in the sections below.</p>
+          <div class="thesis-media-block">
+            <div class="thesis-media-container">
+              <img src="assets/osm/osm-flowchart.jpg" alt="Full procedural pipeline dependency tree" loading="lazy">
+            </div>
+            <p class="thesis-media-caption">The full team pipeline: OSM preprocessing feeds into road generation, island generation, and tram spline creation, which then drive the biome generators and a Python exporter into UE5.</p>
+          </div>
+          <div class="thesis-media-block">
+            <div class="thesis-media-container">
+              <img src="assets/osm/osm-pipeline-diagram.jpg" alt="OSM data to islands to biome assignment" loading="lazy">
+            </div>
+            <p class="thesis-media-caption">Raw OSM data (left) is cleaned into city islands (centre), then each island gets a biome type assigned (right, colour-coded).</p>
+          </div>
+        </div>
+
+        <div class="thesis-section">
+          <p class="thesis-section-label">Biome system</p>
+          <h3 class="thesis-section-heading">Assigning character to every city block</h3>
+          <p class="thesis-section-text">The spaces between roads are called islands. Each island gets a biome type that determines what content fills it. I built the biome generator HDA that drives this assignment using VEX probability ramps, one per biome type, each shaped by two inputs: the island's normalised distance from the city centre, and its size. Commercial zones cluster near the centre and favour larger islands. Parks peak at mid-distance. Parking trends toward the outskirts. Empty squares are rare and appear at any distance.</p>
+          <div class="thesis-media-block">
+            <div class="thesis-media-container">
+              <img src="assets/osm/osm-houdini-prototype.jpg" alt="Early Houdini prototype showing colour-coded biome and road layout" loading="lazy">
+            </div>
+            <p class="thesis-media-caption">Early Houdini prototype showing the biome assignment pass. Road network visible in colour, island geometry in place before content generators run.</p>
+          </div>
+        </div>
+
+        <div class="thesis-section">
+          <p class="thesis-section-label">Generators</p>
+          <h3 class="thesis-section-heading">Two biome content generators</h3>
+          <p class="thesis-section-text">Once an island has a biome assigned, a dedicated HDA fills it with the right content. I built two of these content generators. Each takes the island polygon, reads its parameters, and procedurally places ground materials, props, and vegetation following the rules defined in the project's art bible. The park, residential, and commercial housing generators were built by teammates.</p>
+          <div class="thesis-image-grid" style="grid-template-columns:repeat(2,1fr); max-width:580px;">
+            <div class="thesis-image-grid-item">
+              <img src="assets/osm/osm-empty-square.jpg" alt="Empty square biome in Unreal Engine 5" loading="lazy">
+              <p class="thesis-image-grid-label">Empty Square — my work</p>
+            </div>
+            <div class="thesis-image-grid-item">
+              <img src="assets/osm/osm-parking.jpg" alt="Parking biome in Unreal Engine 5" loading="lazy">
+              <p class="thesis-image-grid-label">Parking — my work</p>
+            </div>
+          </div>
+          <div class="thesis-image-grid" style="grid-template-columns:repeat(2,1fr); max-width:580px; margin-top:10px;">
+            <div class="thesis-image-grid-item">
+              <img src="assets/osm/osm-parks.jpg" alt="Park biome in Unreal Engine 5 — built by teammate" loading="lazy">
+              <p class="thesis-image-grid-label">Park — teammate</p>
+            </div>
+            <div class="thesis-image-grid-item">
+              <img src="assets/osm/osm-buildings.jpg" alt="City street with buildings — built by teammate" loading="lazy">
+              <p class="thesis-image-grid-label">Buildings — teammate</p>
+            </div>
+          </div>
+          <p style="font-size:.75rem;color:var(--muted);margin-top:12px;letter-spacing:.02em;">The park and building renders are shown for context — those generators were built by other team members.</p>
+        </div>
+
+        <div class="thesis-section">
+          <p class="thesis-section-label">Road geometry</p>
+          <h3 class="thesis-section-heading">Road mesh HDA</h3>
+          <p class="thesis-section-text">I built the road mesh HDA: the node that takes cleaned OSM splines and generates the actual road surface geometry — lane widths, tram track insets, sidewalk borders, and intersection shapes. The OSM spline cleanup upstream and the vehicle navigation spline generation downstream were handled by teammates. I also contributed some work to the tram spline generator alongside the teammate who owned it.</p>
+          <div class="thesis-media-block">
+            <div class="thesis-media-container">
+              <img src="assets/osm/osm-road-gen.jpg" alt="Road generation stages: OSM splines, road mesh, vehicle navigation splines" loading="lazy">
+            </div>
+            <p class="thesis-media-caption">Left to right: cleaned OSM splines (team), road mesh geometry (my HDA), vehicle navigation splines (team).</p>
+          </div>
+        </div>
+
+        <div class="thesis-section">
+          <p class="thesis-section-label">Parallax storefronts</p>
+          <h3 class="thesis-section-heading">Fake interiors that read as real</h3>
+          <p class="thesis-section-text">Commercial buildings needed shop interiors visible through their windows. Modelling actual rooms behind every storefront was not practical at city scale, so I used parallax occlusion mapping with hand-painted cube map textures to fake depth inside the glass. Three store types each had their own texture layout: a clothing store with mannequins and garment racks, a pharmacy with wall shelving and brand signage, and a restaurant with hanging lights and a visible interior. As you move past the building the perspective shifts, making the fake room read as real space.</p>
+          <div class="thesis-image-grid" style="grid-template-columns:repeat(3,1fr); max-width:540px;">
+            <div class="thesis-image-grid-item">
+              <img src="assets/osm/osm-parallax-clothing.png" alt="Clothing store parallax cube map texture" loading="lazy">
+              <p class="thesis-image-grid-label">Clothing store</p>
+            </div>
+            <div class="thesis-image-grid-item">
+              <img src="assets/osm/osm-parallax-pharmacy.png" alt="Pharmacy parallax cube map texture" loading="lazy">
+              <p class="thesis-image-grid-label">Pharmacy</p>
+            </div>
+            <div class="thesis-image-grid-item">
+              <img src="assets/osm/osm-parallax-restaurant.png" alt="Restaurant parallax cube map texture" loading="lazy">
+              <p class="thesis-image-grid-label">Restaurant</p>
+            </div>
+          </div>
+          <div class="thesis-image-grid" style="grid-template-columns:repeat(2,1fr); max-width:540px; margin-top:10px;">
+            <div class="thesis-image-grid-item">
+              <img src="assets/osm/osm-parallax-ingame-1.png" alt="Parallax storefronts in-engine" loading="lazy">
+              <p class="thesis-image-grid-label">In-engine result</p>
+            </div>
+            <div class="thesis-image-grid-item">
+              <img src="assets/osm/osm-parallax-ingame-2.png" alt="Parallax storefronts close-up" loading="lazy">
+              <p class="thesis-image-grid-label">Close-up</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="thesis-section">
+          <p class="thesis-section-label">Purpose</p>
+          <h3 class="thesis-section-heading">A training environment for AI</h3>
+          <p class="thesis-section-text">The finished city was the environment for OTIV's sensor simulation pipeline, set up by the team's programmers. AirSim ran on the tram and captured colour camera feeds, per-class segmentation masks, and depth images from multiple angles as the tram drove its route. All of it fed into training data for OTIV's advanced driver assistance systems running on real trams in Ghent. The dynamic weather system using Ultra Dynamic Sky, giving varied lighting and weather conditions for broader training data, was also a teammate's contribution.</p>
+          <div class="thesis-media-block">
+            <div class="thesis-media-container">
+              <img src="assets/osm/osm-airsim-sensors.jpg" alt="AirSim sensor outputs: colour camera, segmentation mask, and depth from tram perspective" loading="lazy">
+            </div>
+            <p class="thesis-media-caption">AirSim sensor outputs from the tram perspective: colour camera (large), segmentation mask with per-class colour coding, and depth image.</p>
+          </div>
+          <div class="thesis-media-block">
+            <div class="thesis-media-container">
+              <img src="assets/osm/osm-weather.jpg" alt="Dynamic weather conditions in the simulation: snow, rain, night, and clear day" loading="lazy">
+            </div>
+            <p class="thesis-media-caption">Ultra Dynamic Sky provided four weather conditions for varied training data: snow, night rain, storms, and clear daylight.</p>
+          </div>
+        </div>
+
+        <div class="proj-links thesis-links">
+          <a class="proj-link primary" href="https://www.artstation.com/artwork/29mY6x" target="_blank" rel="noopener">ArtStation ↗</a>
+          <a class="proj-link" href="#">GitHub ↗</a>
+        </div>
+      `;
+
+      detail.style.animation = 'none';
+      detail.offsetHeight;
+      detail.style.animation = '';
+    }
+
+    // ── Remesh project detail ─────────────────────────────────
+    function renderRemeshProject() {
+      const detail = document.getElementById('project-detail');
+      const tagSpan = t => `<span style="font-size:.7rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-right:14px;">${t}</span>`;
+
+      detail.innerHTML = `
+        <p class="proj-eyebrow">${['Pipeline Automation','Blender','Python','Unity','3D'].map(tagSpan).join('')}</p>
+        <h2>Batch Remeshing Pipeline for Clothing Assets</h2>
+        <p class="proj-description">During my internship at Play it, a game-based learning company in Kortrijk, I designed and built a pipeline to batch-convert 256 high-poly clothing, hair, and accessory assets into optimised low-poly versions across 960 texture variations. Each output was fully game-ready: remeshed, retextured through baking, and with skinning weights transferred.</p>
+
+        <div class="thesis-section">
+          <p class="thesis-section-label">Context</p>
+          <h3 class="thesis-section-heading">256 assets, no time to do it by hand</h3>
+          <p class="thesis-section-text">Play it builds game-based learning software built around a customisable 3D character. Their library of clothing, hair, and accessory assets existed as high-poly meshes from Character Creator 4. To run in a real-time Unity game, each asset needed a lower-poly version with the original textures baked down and the original skinning weights transferred so animations still worked. At 256 assets and 960 texture variations, doing that manually was off the table.</p>
+          <div class="thesis-media-block">
+            <div class="thesis-media-container">
+              <img src="assets/remesh/character-final.png" alt="Final rendered character wearing processed clothing assets" loading="lazy">
+            </div>
+            <p class="thesis-media-caption">A finished character wearing clothing assets processed through the pipeline, ready for the game.</p>
+          </div>
+        </div>
+
+        <div class="thesis-section">
+          <p class="thesis-section-label">The tool</p>
+          <h3 class="thesis-section-heading">A four-step Blender panel</h3>
+          <p class="thesis-section-text">I built a custom Blender UI panel that walks through the full conversion in four steps. Step 1 imports FBX files exported from Character Creator 4. Step 2 converts the CC4 rig to Play it's internal rig format. Step 3 is the core of the pipeline: it lists all assets in the selected collection, lets you set a remesh percentage and texture size per batch, and runs Quad Remesher across the whole collection in one click. Before triggering the batch remesh, the user could paint directly on the mesh with a vertex paint brush to mark areas that needed higher polygon density — shoulders on a shirt, for example, need more geometry than the torso because they bend and stretch more with animations. Step 4 exports the retopologised skinned meshes as FBX files.</p>
+          <div class="thesis-media-block">
+            <div class="thesis-media-container">
+              <img src="assets/remesh/blender-ui.png" alt="Custom Blender UI panel showing the four-step pipeline" loading="lazy">
+            </div>
+            <p class="thesis-media-caption">The custom Blender panel. Each step maps to a discrete part of the conversion process.</p>
+          </div>
+        </div>
+
+        <div class="thesis-section">
+          <p class="thesis-section-label">Full pipeline</p>
+          <h3 class="thesis-section-heading">From CC4 export to Unity</h3>
+          <p class="thesis-section-text">The Blender tool handles the remesh and export. The rest of the pipeline runs around it: textures are baked from the high-poly source onto the low-poly UV layout, skinning weights are transferred, and any asset where the automated steps failed gets flagged for manual review. Once everything passes, the assets are brought into Unity and integrated with the character system.</p>
+          <div class="thesis-pipeline-steps" style="grid-template-columns: repeat(4,1fr); max-width: 580px;">
+            <div class="thesis-pipeline-step">
+              <p class="thesis-step-number">Steps 1–2</p>
+              <p class="thesis-step-name">Import + rig convert</p>
+              <p class="thesis-step-desc">CC4 FBX imported, rig converted to Play it's format.</p>
+            </div>
+            <div class="thesis-pipeline-step">
+              <p class="thesis-step-number">Step 3</p>
+              <p class="thesis-step-name">Paint density + batch remesh</p>
+              <p class="thesis-step-desc">Vertex paint marks high-density zones, then Quad Remesher runs across the full batch.</p>
+            </div>
+            <div class="thesis-pipeline-step">
+              <p class="thesis-step-number">Step 4</p>
+              <p class="thesis-step-name">Export + bake + skin transfer</p>
+              <p class="thesis-step-desc">FBX exported, textures baked from high-poly, skinning weights transferred to the new mesh.</p>
+            </div>
+            <div class="thesis-pipeline-step">
+              <p class="thesis-step-number">Done</p>
+              <p class="thesis-step-name">Unity implementation</p>
+              <p class="thesis-step-desc">Fully game-ready assets integrated into the Unity character system.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="thesis-section">
+          <p class="thesis-section-label">Topology</p>
+          <h3 class="thesis-section-heading">Before and after remeshing</h3>
+          <p class="thesis-section-text">The wireframe comparison shows the same t-shirt asset before and after remeshing. The original mesh has a dense, uneven polygon distribution. After Quad Remesher, the result is clean quad-dominant geometry at a fraction of the original count, predictably deformable and ready for skinning weight transfer.</p>
+          <div class="thesis-image-grid" style="grid-template-columns: repeat(2,1fr); max-width: 520px;">
+            <div class="thesis-image-grid-item">
+              <img src="assets/remesh/topology-original.png" alt="Original high-poly t-shirt topology" loading="lazy">
+              <p class="thesis-image-grid-label">Original mesh</p>
+            </div>
+            <div class="thesis-image-grid-item">
+              <img src="assets/remesh/topology-clean.png" alt="Remeshed low-poly t-shirt topology" loading="lazy">
+              <p class="thesis-image-grid-label">After remesh</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="thesis-section">
+          <p class="thesis-section-label">Challenges</p>
+          <h3 class="thesis-section-heading">Where automation breaks down</h3>
+          <p class="thesis-section-text">The library covered a wide range of asset complexity. Simple clothing remeshed cleanly. Geometrically complex accessories, anything with straps, buckles, fine trim, or thin geometry, regularly produced broken results: collapsed faces, missing sections, or mesh artifacts that made the skinning transfer fail downstream. The same happened with some texture bakes. Handling these edge cases and keeping the pipeline robust across such a varied set of inputs was a significant part of the work.</p>
+          <div class="thesis-image-grid" style="grid-template-columns: repeat(2,1fr); max-width: 520px;">
+            <div class="thesis-image-grid-item">
+              <img src="assets/remesh/backpack-hipoly.png" alt="High-poly backpack wireframe showing mesh complexity" loading="lazy">
+              <p class="thesis-image-grid-label">Complex source asset</p>
+            </div>
+            <div class="thesis-image-grid-item">
+              <img src="assets/remesh/remesh-failed.png" alt="Hat asset with a failed remesh result" loading="lazy">
+              <p class="thesis-image-grid-label">Failed remesh result</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="thesis-section">
+          <p class="thesis-section-label">Supporting scripts</p>
+          <h3 class="thesis-section-heading">Tools built around the pipeline</h3>
+          <p class="thesis-section-text">Alongside the main Blender addon, several standalone scripts handled the parts of the pipeline that lived outside Blender: organising raw CC4 exports, running the pipeline headlessly across many files, and managing texture variants for hair assets.</p>
+
+          <div style="margin-top:28px;">
+            <p style="font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">FBX File Organizer</p>
+            <p class="thesis-section-text" style="margin-bottom:16px;">Character Creator 4 exports FBX files in bulk with no structure. Before they could be batch-processed in Blender, they needed to be split into manageable chunks. This script takes a source folder, sorts all FBX files (and their accompanying texture folders) into numbered batch folders of a configurable size, and can optionally separate male and female assets into their own batches. It also writes a size report so you can track what was processed.</p>
+            <div class="thesis-media-block" style="max-width:460px;">
+              <div class="thesis-media-container">
+                <img src="assets/remesh/script-fbx-organizer.png" alt="FBX File Organizer UI" loading="lazy">
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:32px;">
+            <p style="font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Blender Batch Processor</p>
+            <p class="thesis-section-text" style="margin-bottom:16px;">Running the remesh and export pipeline manually on dozens of .blend files would have taken days. This app queues up any number of .blend files, then launches Blender headlessly on each one in sequence — running the full remesh-and-export operation automatically. Files move from Pending to Completed as they finish. Paths to Blender, the addon script, and the export folder are all configurable, so the whole thing could be kicked off and left to run overnight.</p>
+            <div class="thesis-media-block">
+              <div class="thesis-media-container">
+                <img src="assets/remesh/script-batch-processor.png" alt="Blender Batch Processor UI" loading="lazy">
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:32px;">
+            <p style="font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Hair Texture Renamer</p>
+            <p class="thesis-section-text" style="margin-bottom:16px;">Hair assets came with textures that needed renaming by colour variant so Unity could map them correctly to the character system. This tool lets you load a batch of hair texture images, preview each one, and click a colour button to append the right suffix to the filename. Nine colour variants were supported. What would have been tedious manual renaming across hundreds of files became a quick click-through session.</p>
+            <div class="thesis-media-block" style="max-width:580px;">
+              <div class="thesis-media-container">
+                <img src="assets/remesh/script-hair-renamer.png" alt="Hair Texture Renamer UI" loading="lazy">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="proj-links thesis-links">
+          <a class="proj-link primary" href="#">GitHub ↗</a>
+        </div>
       `;
 
       detail.style.animation = 'none';
@@ -728,12 +1433,22 @@
       btn.addEventListener('click', () => {
         document.querySelectorAll('.project-list button').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        renderProject(btn.dataset.project);
+        if (btn.dataset.project === 'llm') {
+          renderThesisProject();
+        } else if (btn.dataset.project === 'remesh') {
+          renderRemeshProject();
+        } else if (btn.dataset.project === 'osm') {
+          renderOSMProject();
+        } else if (btn.dataset.project === 'graphics') {
+          renderGraphicsProject();
+        } else {
+          renderProject(btn.dataset.project);
+        }
       });
     });
 
     // Init
-    renderProject('osm');
+    renderOSMProject();
   </script>
 
 </body>
