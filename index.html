@@ -48,6 +48,24 @@
       gap: 14px;
     }
 
+    .gizmo-wrapper {
+      width: 88px;
+      height: 88px;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    #gizmo-canvas {
+      position: absolute;
+      width: 192px;
+      height: 192px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) translateY(4px);
+      filter: grayscale(1);
+      cursor: default;
+    }
+
     .avatar {
       width: 88px;
       height: 88px;
@@ -178,6 +196,13 @@
       background: var(--hover-bg);
       color: var(--text);
       font-weight: 500;
+    }
+
+    .project-list-divider {
+      height: 1px;
+      background: var(--line);
+      margin: 6px 0;
+      pointer-events: none;
     }
 
     /* Project detail */
@@ -637,14 +662,15 @@
 
     /* ── Graphics gallery ── */
     .graphics-gallery {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
+      columns: 3;
+      column-gap: 8px;
       margin-top: 24px;
       max-width: 640px;
     }
 
     .graphics-gallery-item {
+      break-inside: avoid;
+      margin-bottom: 8px;
       border: 1px solid var(--line);
       border-radius: 8px;
       overflow: hidden;
@@ -663,6 +689,36 @@
 
     .graphics-gallery-item img:hover { opacity: .82; }
 
+    .graphics-split {
+      display: grid;
+      grid-template-columns: 3fr 2fr;
+      gap: 40px;
+      align-items: start;
+      margin-top: 24px;
+    }
+
+    .graphics-split .graphics-gallery {
+      max-width: none;
+      margin-top: 12px;
+    }
+
+    .graphics-3d-col {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .graphics-3d-item img {
+      width: 100%;
+      display: block;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      margin-top: 12px;
+      transition: opacity .15s;
+    }
+
+    .graphics-3d-item img:hover { opacity: .82; }
+
     /* ── Animations ── */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(12px); }
@@ -670,8 +726,81 @@
     }
 
     .tab-panel.active .projects-layout,
-    .tab-panel.active .contact-layout {
+    .tab-panel.active .contact-layout,
+    .tab-panel.active .assets-layout {
       animation: fadeUp .35s ease both;
+    }
+
+    /* ── 3D Assets ── */
+    .assets-layout {
+      padding: 40px 0 60px;
+      max-width: 960px;
+    }
+
+    .assets-intro {
+      max-width: 560px;
+      margin-bottom: 44px;
+    }
+
+    .assets-intro h2 {
+      font-family: var(--serif);
+      font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+      margin-bottom: 12px;
+    }
+
+    .assets-intro p {
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .assets-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 40px;
+    }
+
+    .asset-card {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .asset-embed {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+    }
+
+    .asset-embed iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+    }
+
+    .asset-card-title {
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      letter-spacing: -.01em;
+    }
+
+    .asset-card-desc {
+      font-size: .9rem;
+      line-height: 1.68;
+    }
+
+    .asset-card-credit {
+      font-size: .75rem;
+      color: var(--muted);
+      letter-spacing: .01em;
+    }
+
+    .asset-card-credit a {
+      color: var(--muted);
+      text-decoration: underline;
+      text-underline-offset: 2px;
     }
 
     /* ── Responsive ── */
@@ -686,7 +815,9 @@
       .profile-card { max-width: 100%; }
       .thesis-pipeline-steps { grid-template-columns: repeat(2, 1fr); }
       .thesis-image-grid { grid-template-columns: 1fr; }
-      .graphics-gallery { grid-template-columns: repeat(2, 1fr); }
+      .graphics-gallery { columns: 2; }
+      .assets-grid { grid-template-columns: 1fr; gap: 48px; }
+      .graphics-split { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -697,10 +828,15 @@
       <img class="avatar" src="profile.png" alt="Ruben Verhelst">
       <div class="site-name">Ruben <span>Verhelst</span></div>
     </div>
-    <nav role="tablist">
-      <button class="tab-btn active" role="tab" aria-selected="true" data-tab="projects">Projects</button>
-      <button class="tab-btn" role="tab" aria-selected="false" data-tab="contact">Contact</button>
-    </nav>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div class="gizmo-wrapper">
+        <canvas id="gizmo-canvas"></canvas>
+      </div>
+      <nav role="tablist">
+        <button class="tab-btn active" role="tab" aria-selected="true" data-tab="projects">Projects</button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-tab="contact">Contact</button>
+      </nav>
+    </div>
   </header>
 
   <div class="divider"></div>
@@ -717,6 +853,8 @@
             <li><button class="active" data-project="osm">Building city from OSM data</button></li>
             <li><button data-project="llm">Comparing LLM-Driven Pipelines for FPS Levels</button></li>
             <li><button data-project="remesh">Pipeline for batch remeshing clothing assets</button></li>
+            <li class="project-list-divider" role="separator"></li>
+            <li><button data-project="assets">Game-ready 3D assets</button></li>
             <li><button data-project="graphics">My graphics work</button></li>
             <li><button data-project="other">Other projects</button></li>
           </ul>
@@ -997,7 +1135,7 @@
         <div class="thesis-section">
           <p class="thesis-section-label">Results</p>
           <h3 class="thesis-section-heading">What the experts found</h3>
-          <p class="thesis-section-text">Three expert evaluators from the CS2 mapping community assessed all six levels blind: two from Pipeline 1 (one per model), two from Pipeline 2 (one per model), and two human-designed baselines. Pipeline 1 failed on functional validity: the GPT-5.2 level had no spawn points at all, and the Claude level had bomb sites neither team could reach without going straight through the middle. Pipeline 2's solver fixed those issues, but all four AI-generated levels were still unanimously identified as AI-made. The three evaluators reached the same conclusion independently, through different framings: the AI outputs reproduce the surface appearance of an FPS map without the spatial logic that makes one work. One evaluator called it "spaghetti design" — bombsites and a mid connected by corridors, when what you actually need are corridors AND areas that carry tactical meaning on their own. None of the AI outputs got close to that.</p>
+          <p class="thesis-section-text">Three expert evaluators from the CS2 mapping community assessed all six levels blind: two from Pipeline 1 (one per model), two from Pipeline 2 (one per model), and two human-designed baselines. Pipeline 1 failed on functional validity: the GPT-5.2 level had no spawn points at all, and the Claude level had bomb sites neither team could reach without going straight through the middle. Pipeline 2's solver fixed those issues, but all four AI-generated levels were still unanimously identified as AI-made. The three evaluators reached the same conclusion independently, through different framings: the AI outputs reproduce the surface appearance of an FPS map without the spatial logic that makes one work. One evaluator called it "spaghetti design": bombsites and a mid connected by corridors, when what you actually need are corridors AND areas that have their own tactical purpose. None of the AI outputs got close to that.</p>
           <div class="thesis-image-grid">
             <div class="thesis-image-grid-item">
               <img src="assets/thesis/topdown-human.png" alt="Top-down: human-designed level" loading="lazy">
@@ -1017,9 +1155,9 @@
         <div class="thesis-section">
           <p class="thesis-section-label">Takeaway</p>
           <h3 class="thesis-section-heading">Key takeaway</h3>
-          <p class="thesis-section-text">Pipeline 2 proved that structural validity can be engineered around the LLM's spatial limitations. It also showed that structural validity isn't design. Reachability, non-overlapping geometry, sightline control: the solver can guarantee all of those. What it can't guarantee is three-lane structural logic, areas with their own tactical meaning, or a layout a player can read at a glance. Those patterns live in the heads of experienced designers, and current LLMs don't encode them.</p>
+          <p class="thesis-section-text">Pipeline 2 proved that structural validity can be engineered around the LLM's spatial limitations. It also showed that structural validity isn't design. Reachability, non-overlapping geometry, sightline control: the solver can guarantee all of those. What it can't guarantee is three-lane structural logic, areas with their own tactical meaning, or a layout a player can read at a glance. Those patterns come from years of design experience, and current LLMs don't have them.</p>
           <div class="thesis-takeaway">
-            <p>Structural validity can be engineered. Tactical intent cannot — at least not yet.</p>
+            <p>Structural validity can be engineered. Tactical intent cannot, at least not yet.</p>
           </div>
         </div>
 
@@ -1034,13 +1172,48 @@
       detail.style.animation = '';
     }
 
+    // ── Assets project detail ─────────────────────────────────
+    function renderAssetsProject() {
+      const detail = document.getElementById('project-detail');
+      const tagSpan = t => `<span style="font-size:.7rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-right:14px;">${t}</span>`;
+
+      detail.innerHTML = `
+        <p class="proj-eyebrow">${['3D Modelling', 'Game Assets', 'Texturing', 'DAE'].map(tagSpan).join('')}</p>
+        <h2>Game-Ready 3D Assets</h2>
+        <p class="proj-description">Hard surface models made during the Game Asset Pipeline course at DAE. Both use the same core pipeline: model, bake high to low poly, texture. What differs is the starting point.</p>
+
+        <div class="assets-grid" style="margin-top:32px;">
+          <div class="asset-card">
+            <div class="asset-embed">
+              <iframe title="Assignment GAP - Metal saw" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/bfcfdde3b5c142018a745d1b61614a72/embed"></iframe>
+            </div>
+            <p class="asset-card-title">Metal Saw</p>
+            <p class="asset-card-desc">Assignment for the Game Asset Pipeline course at DAE, second year. Worked from real-life photo reference with a realistic result as the goal. The core pipeline was modelling, baking from high to low poly, and texturing.</p>
+            <p class="asset-card-credit">View on <a href="https://sketchfab.com/3d-models/assignment-gap-metal-saw-bfcfdde3b5c142018a745d1b61614a72" target="_blank" rel="noopener">Sketchfab</a></p>
+          </div>
+          <div class="asset-card">
+            <div class="asset-embed">
+              <iframe title="GAP Assignment - Futuristic sneaker" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/8c6e9d1766b74847aab5c0b6ec9c3d2a/embed"></iframe>
+            </div>
+            <p class="asset-card-title">Futuristic Sneaker</p>
+            <p class="asset-card-desc">Final project for the Game Asset Pipeline course at DAE, second year. Designed from scratch rather than reference, which shifted more of the work onto the design decisions. Same pipeline underneath: model, bake from high to low poly, texture.</p>
+            <p class="asset-card-credit">View on <a href="https://sketchfab.com/3d-models/gap-assignment-futuristic-sneaker-8c6e9d1766b74847aab5c0b6ec9c3d2a" target="_blank" rel="noopener">Sketchfab</a></p>
+          </div>
+        </div>
+      `;
+
+      detail.style.animation = 'none';
+      detail.offsetHeight;
+      detail.style.animation = '';
+    }
+
     // ── Graphics project detail ───────────────────────────────
     function renderGraphicsProject() {
       const detail = document.getElementById('project-detail');
       const tagSpan = t => `<span style="font-size:.7rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-right:14px;">${t}</span>`;
 
       const galleryItems = [
-        ['design-games-monday.jpg',    'Games Monday event banner — 3D arcade scene'],
+        ['design-games-monday.jpg',    'Games Monday event banner, 3D arcade scene'],
         ['design-galabal-poster.jpg',  'Galabal formal event poster'],
         ['design-galabal-banner.jpg',  'Galabal banner'],
         ['design-kiekenfuif.jpg',      'Kiekenfuif event poster'],
@@ -1074,39 +1247,33 @@
         <h2>My graphics work</h2>
         <p class="proj-description">A selection of 3D modelling and graphic design work. The 3D pieces are personal projects built from scratch. The design work is mostly client and commission work for events, student organisations, and brands around Kortrijk.</p>
 
-        <div class="thesis-section">
-          <p class="thesis-section-label">3D work</p>
-          <h3 class="thesis-section-heading">Sneaker — original game-ready 3D model</h3>
-          <p class="thesis-section-text">A fully original sneaker modelled, UV-unwrapped, and textured from scratch to game-ready specifications. Not just built for a render — the mesh topology and texture maps meet real-time asset requirements. The presentation was put together in post with typographic composition.</p>
-          <div class="thesis-media-block" style="max-width:520px;">
-            <div class="thesis-media-container">
+        <div class="graphics-split">
+
+          <div>
+            <p class="thesis-section-label">Graphic design</p>
+            <h3 class="thesis-section-heading">Event posters and client work</h3>
+            <p class="thesis-section-text" style="margin-top:8px;">Posters, banners, flyers, product mockups, and branding work, mostly for Centaura (the Howest & UGent student organisation) and associated events. Click any image to open full size.</p>
+            <div class="graphics-gallery">
+              ${galleryHtml}
+            </div>
+          </div>
+
+          <div class="graphics-3d-col">
+            <p class="thesis-section-label">3D work</p>
+            <div class="graphics-3d-item">
+              <h3 class="thesis-section-heading">Sneaker</h3>
+              <p class="thesis-section-text" style="margin-top:8px;">A fully original sneaker modelled, UV-unwrapped, and textured from scratch to game-ready spec. It wasn't just built for a render; the mesh topology and texture maps meet real-time asset requirements.</p>
               <img src="assets/graphics/sneaker-model.jpg" alt="Original game-ready 3D sneaker model" loading="lazy">
             </div>
-          </div>
-        </div>
-
-        <div class="thesis-section">
-          <p class="thesis-section-label">3D work</p>
-          <h3 class="thesis-section-heading">Toyota 2000 GT — original high-poly 3D models</h3>
-          <p class="thesis-section-text">Both cars in this poster are original high-poly models I built. The Toyota 2000 GT is a particularly demanding model because of its curved, organic bodywork and the precision required for the period-correct detailing. The poster was composed around the models with cinematic lighting and a painted background to get the racing feel.</p>
-          <div class="thesis-media-block" style="max-width:420px;">
-            <div class="thesis-media-container">
-              <img src="assets/graphics/toyota-car.jpg" alt="Original high-poly Toyota 2000 GT 3D models" loading="lazy">
+            <div class="graphics-3d-item">
+              <h3 class="thesis-section-heading">Toyota 2000 GT</h3>
+              <p class="thesis-section-text" style="margin-top:8px;">Both cars in this poster are original high-poly models I built. The Toyota 2000 GT is a difficult model to get right because of its curved bodywork and the detail work needed to nail the period-correct look.</p>
+              <a href="https://www.artstation.com/artwork/LR94qk" target="_blank" rel="noopener">
+                <img src="assets/graphics/toyota-car.jpg" alt="Original high-poly Toyota 2000 GT 3D models" loading="lazy">
+              </a>
             </div>
           </div>
-        </div>
 
-        <div class="thesis-section">
-          <p class="thesis-section-label">Graphic design</p>
-          <h3 class="thesis-section-heading">Event posters and client work</h3>
-          <p class="thesis-section-text">Posters, banners, flyers, product mockups, and branding work — mostly for Centaura (the Howest & UGent student organisation) and associated events. Click any image to open full size.</p>
-          <div class="graphics-gallery">
-            ${galleryHtml}
-          </div>
-        </div>
-
-        <div class="proj-links thesis-links">
-          <a class="proj-link primary" href="https://www.artstation.com/artwork/LR94qk" target="_blank" rel="noopener">ArtStation — car model ↗</a>
         </div>
       `;
 
@@ -1138,11 +1305,11 @@
           <div class="thesis-takeaway" style="margin-top:20px;">
             <p>"We gave up trying to use OSM data for Matrix Awakens because it was not usable."</p>
           </div>
-          <p style="font-size:.75rem;color:var(--muted);margin-top:6px;letter-spacing:.02em;">Christian Sirois — Senior Technical Artist, Epic Games</p>
+          <p style="font-size:.75rem;color:var(--muted);margin-top:6px;letter-spacing:.02em;">Christian Sirois, Senior Technical Artist at Epic Games</p>
           <div class="thesis-takeaway" style="margin-top:16px;">
             <p>"Hi Akio, you need to build the roads yourself. OSM data is too messy. Wish you success with the project."</p>
           </div>
-          <p style="font-size:.75rem;color:var(--muted);margin-top:6px;letter-spacing:.02em;">Faruk Helplevent — City Generation with OSM, The Scope</p>
+          <p style="font-size:.75rem;color:var(--muted);margin-top:6px;letter-spacing:.02em;">Faruk Helplevent, City Generation with OSM, The Scope</p>
         </div>
 
         <div class="thesis-section">
@@ -1182,30 +1349,30 @@
           <div class="thesis-image-grid" style="grid-template-columns:repeat(2,1fr); max-width:580px;">
             <div class="thesis-image-grid-item">
               <img src="assets/osm/osm-empty-square.jpg" alt="Empty square biome in Unreal Engine 5" loading="lazy">
-              <p class="thesis-image-grid-label">Empty Square — my work</p>
+              <p class="thesis-image-grid-label">Empty Square (my work)</p>
             </div>
             <div class="thesis-image-grid-item">
               <img src="assets/osm/osm-parking.jpg" alt="Parking biome in Unreal Engine 5" loading="lazy">
-              <p class="thesis-image-grid-label">Parking — my work</p>
+              <p class="thesis-image-grid-label">Parking (my work)</p>
             </div>
           </div>
           <div class="thesis-image-grid" style="grid-template-columns:repeat(2,1fr); max-width:580px; margin-top:10px;">
             <div class="thesis-image-grid-item">
-              <img src="assets/osm/osm-parks.jpg" alt="Park biome in Unreal Engine 5 — built by teammate" loading="lazy">
-              <p class="thesis-image-grid-label">Park — teammate</p>
+              <img src="assets/osm/osm-parks.jpg" alt="Park biome in Unreal Engine 5, built by teammate" loading="lazy">
+              <p class="thesis-image-grid-label">Park (teammate)</p>
             </div>
             <div class="thesis-image-grid-item">
-              <img src="assets/osm/osm-buildings.jpg" alt="City street with buildings — built by teammate" loading="lazy">
-              <p class="thesis-image-grid-label">Buildings — teammate</p>
+              <img src="assets/osm/osm-buildings.jpg" alt="City street with buildings, built by teammate" loading="lazy">
+              <p class="thesis-image-grid-label">Buildings (teammate)</p>
             </div>
           </div>
-          <p style="font-size:.75rem;color:var(--muted);margin-top:12px;letter-spacing:.02em;">The park and building renders are shown for context — those generators were built by other team members.</p>
+          <p style="font-size:.75rem;color:var(--muted);margin-top:12px;letter-spacing:.02em;">The park and building renders are shown for context; those generators were built by other team members.</p>
         </div>
 
         <div class="thesis-section">
           <p class="thesis-section-label">Road geometry</p>
           <h3 class="thesis-section-heading">Road mesh HDA</h3>
-          <p class="thesis-section-text">I built the road mesh HDA: the node that takes cleaned OSM splines and generates the actual road surface geometry — lane widths, tram track insets, sidewalk borders, and intersection shapes. The OSM spline cleanup upstream and the vehicle navigation spline generation downstream were handled by teammates. I also contributed some work to the tram spline generator alongside the teammate who owned it.</p>
+          <p class="thesis-section-text">I built the road mesh HDA: the node that takes cleaned OSM splines and generates the actual road surface geometry, including lane widths, tram track insets, sidewalk borders, and intersection shapes. The OSM spline cleanup upstream and the vehicle navigation spline generation downstream were handled by teammates. I also contributed some work to the tram spline generator alongside the teammate who owned it.</p>
           <div class="thesis-media-block">
             <div class="thesis-media-container">
               <img src="assets/osm/osm-road-gen.jpg" alt="Road generation stages: OSM splines, road mesh, vehicle navigation splines" loading="lazy">
@@ -1281,12 +1448,12 @@
       detail.innerHTML = `
         <p class="proj-eyebrow">${['Pipeline Automation','Blender','Python','Unity','3D'].map(tagSpan).join('')}</p>
         <h2>Batch Remeshing Pipeline for Clothing Assets</h2>
-        <p class="proj-description">During my internship at Play it, a game-based learning company in Kortrijk, I designed and built a pipeline to batch-convert 256 high-poly clothing, hair, and accessory assets into optimised low-poly versions across 960 texture variations. Each output was fully game-ready: remeshed, retextured through baking, and with skinning weights transferred.</p>
+        <p class="proj-description">During my internship at PLAY IT, a game-based learning company in Kortrijk, I designed and built a pipeline to batch-convert 256 high-poly clothing, hair, and accessory assets into optimised low-poly versions across 960 texture variations. Each output was fully game-ready: remeshed, retextured through baking, and with skinning weights transferred.</p>
 
         <div class="thesis-section">
           <p class="thesis-section-label">Context</p>
           <h3 class="thesis-section-heading">256 assets, no time to do it by hand</h3>
-          <p class="thesis-section-text">Play it builds game-based learning software built around a customisable 3D character. Their library of clothing, hair, and accessory assets existed as high-poly meshes from Character Creator 4. To run in a real-time Unity game, each asset needed a lower-poly version with the original textures baked down and the original skinning weights transferred so animations still worked. At 256 assets and 960 texture variations, doing that manually was off the table.</p>
+          <p class="thesis-section-text">PLAY IT builds game-based learning software with multiple characters and a large range of clothing presets. Their library of clothing, hair, and accessory assets existed as high-poly meshes from Character Creator 4. To run in a real-time Unity game, each asset needed a lower-poly version with the original textures baked down and the original skinning weights transferred so animations still worked. At 256 assets and 960 texture variations, doing that manually wasn't feasible.</p>
           <div class="thesis-media-block">
             <div class="thesis-media-container">
               <img src="assets/remesh/character-final.png" alt="Final rendered character wearing processed clothing assets" loading="lazy">
@@ -1298,7 +1465,7 @@
         <div class="thesis-section">
           <p class="thesis-section-label">The tool</p>
           <h3 class="thesis-section-heading">A four-step Blender panel</h3>
-          <p class="thesis-section-text">I built a custom Blender UI panel that walks through the full conversion in four steps. Step 1 imports FBX files exported from Character Creator 4. Step 2 converts the CC4 rig to Play it's internal rig format. Step 3 is the core of the pipeline: it lists all assets in the selected collection, lets you set a remesh percentage and texture size per batch, and runs Quad Remesher across the whole collection in one click. Before triggering the batch remesh, the user could paint directly on the mesh with a vertex paint brush to mark areas that needed higher polygon density — shoulders on a shirt, for example, need more geometry than the torso because they bend and stretch more with animations. Step 4 exports the retopologised skinned meshes as FBX files.</p>
+          <p class="thesis-section-text">I built a custom Blender UI panel that walks through the full conversion in four steps. Step 1 imports FBX files exported from Character Creator 4. Step 2 converts the CC4 rig to PLAY IT's internal rig format. Step 3 is the core of the pipeline: it lists all assets in the selected collection, lets you set a remesh percentage and texture size per batch, and runs Quad Remesher across the whole collection in one click. Before triggering the batch remesh, the user could paint directly on the mesh with a vertex paint brush to mark areas that needed higher polygon density. Shoulders on a shirt, for example, need more geometry than the torso because they deform more with animation. Step 4 exports the retopologised skinned meshes as FBX files.</p>
           <div class="thesis-media-block">
             <div class="thesis-media-container">
               <img src="assets/remesh/blender-ui.png" alt="Custom Blender UI panel showing the four-step pipeline" loading="lazy">
@@ -1315,7 +1482,7 @@
             <div class="thesis-pipeline-step">
               <p class="thesis-step-number">Steps 1–2</p>
               <p class="thesis-step-name">Import + rig convert</p>
-              <p class="thesis-step-desc">CC4 FBX imported, rig converted to Play it's format.</p>
+              <p class="thesis-step-desc">CC4 FBX imported, rig converted to PLAY IT's format.</p>
             </div>
             <div class="thesis-pipeline-step">
               <p class="thesis-step-number">Step 3</p>
@@ -1338,7 +1505,7 @@
         <div class="thesis-section">
           <p class="thesis-section-label">Topology</p>
           <h3 class="thesis-section-heading">Before and after remeshing</h3>
-          <p class="thesis-section-text">The wireframe comparison shows the same t-shirt asset before and after remeshing. The original mesh has a dense, uneven polygon distribution. After Quad Remesher, the result is clean quad-dominant geometry at a fraction of the original count, predictably deformable and ready for skinning weight transfer.</p>
+          <p class="thesis-section-text">The wireframe comparison shows the same t-shirt asset before and after remeshing. The original mesh has a dense, uneven polygon distribution. After Quad Remesher, the result is clean quad-dominant geometry at a fraction of the original count, ready for skinning weight transfer.</p>
           <div class="thesis-image-grid" style="grid-template-columns: repeat(2,1fr); max-width: 520px;">
             <div class="thesis-image-grid-item">
               <img src="assets/remesh/topology-original.png" alt="Original high-poly t-shirt topology" loading="lazy">
@@ -1354,7 +1521,7 @@
         <div class="thesis-section">
           <p class="thesis-section-label">Challenges</p>
           <h3 class="thesis-section-heading">Where automation breaks down</h3>
-          <p class="thesis-section-text">The library covered a wide range of asset complexity. Simple clothing remeshed cleanly. Geometrically complex accessories, anything with straps, buckles, fine trim, or thin geometry, regularly produced broken results: collapsed faces, missing sections, or mesh artifacts that made the skinning transfer fail downstream. The same happened with some texture bakes. Handling these edge cases and keeping the pipeline robust across such a varied set of inputs was a significant part of the work.</p>
+          <p class="thesis-section-text">The library covered a wide range of asset complexity. Simple clothing remeshed cleanly. Geometrically complex accessories with straps, buckles, fine trim, or thin geometry regularly produced broken results: collapsed faces, missing sections, or mesh artifacts that made the skinning transfer fail downstream. The same happened with some texture bakes. Keeping the pipeline reliable across that range of inputs took up a lot of time.</p>
           <div class="thesis-image-grid" style="grid-template-columns: repeat(2,1fr); max-width: 520px;">
             <div class="thesis-image-grid-item">
               <img src="assets/remesh/backpack-hipoly.png" alt="High-poly backpack wireframe showing mesh complexity" loading="lazy">
@@ -1384,7 +1551,7 @@
 
           <div style="margin-top:32px;">
             <p style="font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Blender Batch Processor</p>
-            <p class="thesis-section-text" style="margin-bottom:16px;">Running the remesh and export pipeline manually on dozens of .blend files would have taken days. This app queues up any number of .blend files, then launches Blender headlessly on each one in sequence — running the full remesh-and-export operation automatically. Files move from Pending to Completed as they finish. Paths to Blender, the addon script, and the export folder are all configurable, so the whole thing could be kicked off and left to run overnight.</p>
+            <p class="thesis-section-text" style="margin-bottom:16px;">Running the remesh and export pipeline manually on dozens of .blend files would have taken days. This app queues up any number of .blend files, then launches Blender headlessly on each one in sequence, running the full remesh-and-export operation automatically. Files move from Pending to Completed as they finish. Paths to Blender, the addon script, and the export folder are all configurable, so the whole thing could be kicked off and left to run overnight.</p>
             <div class="thesis-media-block">
               <div class="thesis-media-container">
                 <img src="assets/remesh/script-batch-processor.png" alt="Blender Batch Processor UI" loading="lazy">
@@ -1394,7 +1561,7 @@
 
           <div style="margin-top:32px;">
             <p style="font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Hair Texture Renamer</p>
-            <p class="thesis-section-text" style="margin-bottom:16px;">Hair assets came with textures that needed renaming by colour variant so Unity could map them correctly to the character system. This tool lets you load a batch of hair texture images, preview each one, and click a colour button to append the right suffix to the filename. Nine colour variants were supported. What would have been tedious manual renaming across hundreds of files became a quick click-through session.</p>
+            <p class="thesis-section-text" style="margin-bottom:16px;">Hair assets came with textures that needed renaming by colour variant so Unity could map them correctly to the character system. This tool lets you load a batch of hair texture images, preview each one, and click a colour button to append the right suffix to the filename. Nine colour variants were supported. Manual renaming across hundreds of files wasn't an option, so this tool turned it into a quick click-through.</p>
             <div class="thesis-media-block" style="max-width:580px;">
               <div class="thesis-media-container">
                 <img src="assets/remesh/script-hair-renamer.png" alt="Hair Texture Renamer UI" loading="lazy">
@@ -1437,6 +1604,8 @@
           renderThesisProject();
         } else if (btn.dataset.project === 'remesh') {
           renderRemeshProject();
+        } else if (btn.dataset.project === 'assets') {
+          renderAssetsProject();
         } else if (btn.dataset.project === 'osm') {
           renderOSMProject();
         } else if (btn.dataset.project === 'graphics') {
@@ -1449,6 +1618,93 @@
 
     // Init
     renderOSMProject();
+  </script>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+    const canvas = document.getElementById('gizmo-canvas');
+    const dpr = Math.min(window.devicePixelRatio, 2);
+    const SIZE = 192;
+
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setSize(SIZE, SIZE);
+    renderer.setPixelRatio(dpr);
+
+    const scene = new THREE.Scene();
+
+    // FOV 60 + z=5 gives half-width ~2.9 units — enough room for arrows at any rotation angle
+    const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 100);
+    camera.position.set(0, 0, 5);
+
+    scene.add(new THREE.AmbientLight(0xffffff, 1.2));
+    const sun = new THREE.DirectionalLight(0xffffff, 1.6);
+    sun.position.set(3, 4, 3);
+    scene.add(sun);
+
+    const pivot = new THREE.Group();
+    scene.add(pivot);
+
+    new GLTFLoader().load('assets/gizmo.glb', (gltf) => {
+      const model = gltf.scene;
+
+      const box = new THREE.Box3().setFromObject(model);
+      const size = box.getSize(new THREE.Vector3());
+      const scale = 1.9 / Math.max(size.x, size.y, size.z);
+      model.scale.setScalar(scale);
+      model.rotation.y = Math.PI;
+
+      pivot.add(model);
+      model.updateMatrixWorld(true);
+      const centeredBox = new THREE.Box3().setFromObject(model);
+      const center = centeredBox.getCenter(new THREE.Vector3());
+      const bboxSize = centeredBox.getSize(new THREE.Vector3());
+
+      // Step 1: center on bounding box
+      model.position.sub(center);
+
+      // Step 2: shift equally on all axes by 1/8 of each axis length
+      // so the gizmo's origin sphere (not the bbox center) sits at the pivot.
+      // Flip sign here if the red marker lands on the wrong side.
+      const k = 1 / 8;
+      model.position.x += bboxSize.x * k;
+      model.position.y += bboxSize.y * k;
+      model.position.z += bboxSize.z * k;
+
+    });
+
+    let targetX = 0, targetY = 0;
+    let currentX = 0, currentY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const dx = e.clientX - (rect.left + rect.width  * 0.5);
+      const dy = e.clientY - (rect.top  + rect.height * 0.5);
+      // atan2 gives fast response near the gizmo, naturally slowing as the mouse moves further away
+      // d=280 means 45° rotation at 280px distance, approaching 90° asymptotically beyond that
+      const d = 280;
+      targetX = Math.atan2(dx, d);
+      targetY = Math.atan2(dy, d);
+    });
+
+    (function animate() {
+      requestAnimationFrame(animate);
+      currentX += (targetX - currentX) * 0.07;
+      currentY += (targetY - currentY) * 0.07;
+      pivot.rotation.y = currentX;
+      pivot.rotation.x = currentY;
+      renderer.render(scene, camera);
+    })();
   </script>
 
 </body>
