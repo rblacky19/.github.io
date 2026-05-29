@@ -48,23 +48,6 @@
       gap: 14px;
     }
 
-    .gizmo-wrapper {
-      width: 88px;
-      height: 88px;
-      flex-shrink: 0;
-      position: relative;
-    }
-
-    #gizmo-canvas {
-      position: absolute;
-      width: 192px;
-      height: 192px;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) translateY(2px);
-      filter: grayscale(1);
-      cursor: default;
-    }
 
     .avatar {
       width: 88px;
@@ -818,7 +801,6 @@
       .graphics-gallery { columns: 2; }
       .assets-grid { grid-template-columns: 1fr; gap: 48px; }
       .graphics-split { grid-template-columns: 1fr; }
-      .gizmo-wrapper { display: none; }
     }
   </style>
 </head>
@@ -829,15 +811,10 @@
       <img class="avatar" src="profile.png" alt="Ruben Verhelst">
       <div class="site-name">Ruben <span>Verhelst</span></div>
     </div>
-    <div style="display:flex;align-items:center;gap:8px;">
-      <div class="gizmo-wrapper">
-        <canvas id="gizmo-canvas"></canvas>
-      </div>
-      <nav role="tablist">
-        <button class="tab-btn active" role="tab" aria-selected="true" data-tab="projects">Projects</button>
-        <button class="tab-btn" role="tab" aria-selected="false" data-tab="contact">Contact</button>
-      </nav>
-    </div>
+    <nav role="tablist">
+      <button class="tab-btn active" role="tab" aria-selected="true" data-tab="projects">Projects</button>
+      <button class="tab-btn" role="tab" aria-selected="false" data-tab="contact">Contact</button>
+    </nav>
   </header>
 
   <div class="divider"></div>
@@ -1621,94 +1598,6 @@
     renderOSMProject();
   </script>
 
-  <script type="importmap">
-    {
-      "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
-      }
-    }
-  </script>
-
-  <script type="module">
-    import * as THREE from 'three';
-    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-
-    if (window.innerWidth <= 680) throw new Error('mobile — skip gizmo');
-
-    const canvas = document.getElementById('gizmo-canvas');
-    const dpr = Math.min(window.devicePixelRatio, 2);
-    const SIZE = 192;
-
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-    renderer.setSize(SIZE, SIZE);
-    renderer.setPixelRatio(dpr);
-
-    const scene = new THREE.Scene();
-
-    // FOV 60 + z=5 gives half-width ~2.9 units — enough room for arrows at any rotation angle
-    const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 100);
-    camera.position.set(0, 0, 5);
-
-    scene.add(new THREE.AmbientLight(0xffffff, 1.2));
-    const sun = new THREE.DirectionalLight(0xffffff, 1.6);
-    sun.position.set(3, 4, 3);
-    scene.add(sun);
-
-    const pivot = new THREE.Group();
-    scene.add(pivot);
-
-    new GLTFLoader().load('assets/gizmo.glb', (gltf) => {
-      const model = gltf.scene;
-
-      const box = new THREE.Box3().setFromObject(model);
-      const size = box.getSize(new THREE.Vector3());
-      const scale = 1.9 / Math.max(size.x, size.y, size.z);
-      model.scale.setScalar(scale);
-      model.rotation.y = Math.PI;
-
-      pivot.add(model);
-      model.updateMatrixWorld(true);
-      const centeredBox = new THREE.Box3().setFromObject(model);
-      const center = centeredBox.getCenter(new THREE.Vector3());
-      const bboxSize = centeredBox.getSize(new THREE.Vector3());
-
-      // Step 1: center on bounding box
-      model.position.sub(center);
-
-      // Step 2: shift equally on all axes by 1/8 of each axis length
-      // so the gizmo's origin sphere (not the bbox center) sits at the pivot.
-      // Flip sign here if the red marker lands on the wrong side.
-      const k = 1 / 8;
-      model.position.x += bboxSize.x * k;
-      model.position.y += bboxSize.y * k;
-      model.position.z += bboxSize.z * k;
-
-    });
-
-    let targetX = 0, targetY = 0;
-    let currentX = 0, currentY = 0;
-
-    document.addEventListener('mousemove', (e) => {
-      const rect = canvas.getBoundingClientRect();
-      const dx = e.clientX - (rect.left + rect.width  * 0.5);
-      const dy = e.clientY - (rect.top  + rect.height * 0.5);
-      // atan2 gives fast response near the gizmo, naturally slowing as the mouse moves further away
-      // d=280 means 45° rotation at 280px distance, approaching 90° asymptotically beyond that
-      const d = 280;
-      targetX = Math.atan2(dx, d);
-      targetY = Math.atan2(dy, d);
-    });
-
-    (function animate() {
-      requestAnimationFrame(animate);
-      currentX += (targetX - currentX) * 0.07;
-      currentY += (targetY - currentY) * 0.07;
-      pivot.rotation.y = currentX;
-      pivot.rotation.x = currentY;
-      renderer.render(scene, camera);
-    })();
-  </script>
 
 </body>
 </html>
