@@ -831,6 +831,7 @@
             <li><button class="active" data-project="osm">Building city from OSM data</button></li>
             <li><button data-project="llm">Comparing LLM-Driven Pipelines for FPS Levels</button></li>
             <li><button data-project="remesh">Pipeline for batch remeshing clothing assets</button></li>
+            <li><button data-project="road">Procedural road generator</button></li>
             <li class="project-list-divider" role="separator"></li>
             <li><button data-project="assets">Game-ready 3D assets</button></li>
             <li><button data-project="graphics">My graphics work</button></li>
@@ -1142,6 +1143,154 @@
         <div class="proj-links thesis-links">
           <a class="proj-link primary" href="#">View Paper ↗</a>
           <a class="proj-link" href="#">GitHub ↗</a>
+        </div>
+      `;
+
+      detail.style.animation = 'none';
+      detail.offsetHeight;
+      detail.style.animation = '';
+    }
+
+    // ── Road project detail ───────────────────────────────────
+    function renderRoadProject() {
+      const detail = document.getElementById('project-detail');
+      const tagSpan = t => `<span style="font-size:.7rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-right:14px;">${t}</span>`;
+
+      detail.innerHTML = `
+        <p class="proj-eyebrow">${['Houdini','Unreal Engine 5','Procedural Generation','Pipeline','HDA'].map(tagSpan).join('')}</p>
+        <h2>Procedural Road Generator</h2>
+        <p class="proj-description">A Houdini digital asset that generates a full road network on any terrain: pathfinding, mesh creation, terrain blending, and guard railings, then exports to Unreal Engine 5 via .bgeo caches. Built for the Procedural Environments course at DAE in the third year.</p>
+
+        <div class="thesis-media-block" style="max-width:720px;margin-top:28px;">
+          <div class="thesis-media-container">
+            <img src="assets/road/road-cliff.png" alt="Generated road winding along a cliff edge over the ocean" loading="lazy">
+          </div>
+        </div>
+
+        <div class="thesis-section">
+          <p class="thesis-section-label">Context</p>
+          <h3 class="thesis-section-heading">One tool, full road network</h3>
+          <p class="thesis-section-text">The goal was a single HDA that takes a set of point-of-interest locations and produces a complete road network between them: terrain-aware pathfinding, a generated road mesh with correct UV layout, terrain blending around the road edges, and optional guard railings. You place points on the terrain in Houdini and the tool automatically calculates the network.</p>
+          <p class="thesis-section-text" style="margin-top:12px;">The environment was built to test it hard: Wadi Al-Disah in Saudi Arabia, with steep red rock faces, desert dunes, and a coastal cliff edge. Rather than running Houdini Engine live inside UE5 (which caused performance issues and data loss), the pipeline exports baked .bgeo caches from Houdini that are loaded into UE5 separately via a bgeo loader HDA.</p>
+          <div class="thesis-media-block" style="margin-top:20px;max-width:640px;">
+            <div class="thesis-media-container" style="background:#111;padding:0;">
+              <video autoplay loop muted playsinline style="width:100%;display:block;border-radius:6px;">
+                <source src="assets/road/road-manual.mp4" type="video/mp4">
+              </video>
+            </div>
+            <p class="thesis-media-caption">Placing POI points on the terrain in Houdini. The road network is calculated and drawn automatically between them.</p>
+          </div>
+        </div>
+
+        <div class="thesis-section">
+          <p class="thesis-section-label">Pathfinding</p>
+          <h3 class="thesis-section-heading">Custom nearpoint remesher</h3>
+          <p class="thesis-section-text">Before pathfinding can run, the terrain needs to be turned into a graph. A standard triangulate or anisotropic triangulate both produce meshes that are either too coarse or biased in one direction to give reliable results. Instead, the tool uses a custom nearpoint-based remesher that gives direct control over graph density and connectivity.</p>
+          <p class="thesis-section-text" style="margin-top:12px;">Two parameters drive it: <em>Amount of Pts to Connect</em> sets how many neighbouring points each node checks, and <em>Edges Per Pt</em> sets how many of those become actual connections. Connections are made with the neighbour closest in Y position, which biases the graph toward routes that naturally follow the terrain's flow rather than cutting across it at arbitrary angles.</p>
+          <p class="thesis-section-text" style="margin-top:12px;">On top of the graph, a cost function determines which route the pathfinder picks. Slope Cost penalises steep terrain, Ascend Cost makes uphill routes more expensive than downhill, Corner Cost penalises sharp direction changes, and the Corner Cost Multiplier scales how harshly consecutive corners compound. The minimum number of POI connections controls how densely the generated network connects the input points.</p>
+          <div class="thesis-image-grid" style="grid-template-columns:repeat(2,1fr);max-width:640px;margin-top:20px;">
+            <div class="thesis-image-grid-item" style="background:#1a1a1a;">
+              <img src="assets/road/road-tab-pathfinding.jpg" alt="Pathfinding tab showing custom remesher and cost calculation controls" loading="lazy">
+              <p class="thesis-image-grid-label">Pathfinding tab controls</p>
+            </div>
+            <div class="thesis-image-grid-item" style="background:#2a2a2a;">
+              <img src="assets/road/road-remesh-graph.jpg" alt="Nearpoint remesh graph visualised in Houdini" loading="lazy">
+              <p class="thesis-image-grid-label">The nearpoint graph</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="thesis-section">
+          <p class="thesis-section-label">Pipeline</p>
+          <h3 class="thesis-section-heading">From points to Unreal Engine</h3>
+          <div class="thesis-media-block" style="max-width:640px;margin-bottom:20px;">
+            <div class="thesis-media-container" style="background:#1a1a1a;">
+              <img src="assets/road/road-node-graph.jpg" alt="Houdini node graph: terrain and curve inputs into roadgenerator HDA, outputting RoadTool, RoadToolMesh and RoadToolRailing bgeo caches" loading="lazy">
+            </div>
+            <p class="thesis-media-caption">The Houdini node graph. The terrain (.bgeo) and POI curve feed into the roadgenerator HDA, which outputs three caches: landscape, road mesh, and railings.</p>
+          </div>
+          <div class="thesis-pipeline-steps" style="grid-template-columns:repeat(4,1fr);max-width:640px;">
+            <div class="thesis-pipeline-step">
+              <p class="thesis-step-number">Step 1</p>
+              <p class="thesis-step-name">Custom remesh</p>
+              <p class="thesis-step-desc">Terrain remeshed via nearpoints into a controllable graph for pathfinding.</p>
+            </div>
+            <div class="thesis-pipeline-step">
+              <p class="thesis-step-number">Step 2</p>
+              <p class="thesis-step-name">Pathfinding</p>
+              <p class="thesis-step-desc">Cost-weighted graph search finds the best route between POIs, avoiding steep slopes and sharp corners.</p>
+            </div>
+            <div class="thesis-pipeline-step">
+              <p class="thesis-step-number">Step 3</p>
+              <p class="thesis-step-name">Mesh + railings</p>
+              <p class="thesis-step-desc">Path becomes road mesh with UV layout, terrain blending, and optional guard railings.</p>
+            </div>
+            <div class="thesis-pipeline-step">
+              <p class="thesis-step-number">Step 4</p>
+              <p class="thesis-step-name">Export to UE5</p>
+              <p class="thesis-step-desc">Baked .bgeo caches loaded into UE5 via bgeo loader HDA, keeping the Unreal side lightweight.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="thesis-section">
+          <p class="thesis-section-label">Interface</p>
+          <h3 class="thesis-section-heading">Three-tab Houdini HDA</h3>
+          <p class="thesis-section-text">The HDA is split into three tabs. Pathfinding controls the remesher and cost weights. Mesh Creation handles road geometry and materials. Railings covers the guard rail geometry.</p>
+          <div class="thesis-media-block" style="margin-top:20px;">
+            <div class="thesis-media-container" style="background:#1a1a1a;">
+              <img src="assets/road/road-interface.jpg" alt="Houdini Road Generator interface showing all three tabs" loading="lazy">
+            </div>
+            <p class="thesis-media-caption">All three tabs side by side: Pathfinding, Mesh Creation, and Railings.</p>
+          </div>
+          <div class="thesis-image-grid" style="grid-template-columns:repeat(2,1fr);max-width:640px;margin-top:16px;">
+            <div class="thesis-image-grid-item" style="background:#1a1a1a;">
+              <img src="assets/road/road-tab-mesh.jpg" alt="Mesh Creation tab" loading="lazy">
+              <p class="thesis-image-grid-label">Mesh Creation</p>
+            </div>
+            <div class="thesis-image-grid-item" style="background:#1a1a1a;">
+              <img src="assets/road/road-tab-railings.jpg" alt="Railings tab" loading="lazy">
+              <p class="thesis-image-grid-label">Railings</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="thesis-section">
+          <p class="thesis-section-label">Results</p>
+          <h3 class="thesis-section-heading">Rendered in Unreal Engine 5</h3>
+          <p class="thesis-section-text">The test environment is based on Wadi Al-Disah with red sandstone cliffs, desert dunes, and a coastal edge. All road geometry, terrain deformation, and railing placement comes from the HDA.</p>
+          <div class="thesis-media-block" style="margin-top:20px;max-width:640px;">
+            <div class="thesis-media-container" style="padding:0;background:#000;">
+              <img src="assets/road/road-preview.gif" alt="Flythrough of the generated road network in Unreal Engine 5" style="width:100%;display:block;border-radius:6px;">
+            </div>
+            <p class="thesis-media-caption">Flythrough of the finished scene in UE5.</p>
+          </div>
+          <div class="thesis-image-grid" style="grid-template-columns:repeat(2,1fr);max-width:640px;margin-top:16px;">
+            <div class="thesis-image-grid-item">
+              <img src="assets/road/road-fork.png" alt="Aerial view of a road fork in desert terrain" loading="lazy">
+              <p class="thesis-image-grid-label">Road fork, aerial view</p>
+            </div>
+            <div class="thesis-image-grid-item">
+              <img src="assets/road/road-railing.png" alt="Road winding along cliff edge with guard railings" loading="lazy">
+              <p class="thesis-image-grid-label">Guard railings on cliff edge</p>
+            </div>
+            <div class="thesis-image-grid-item">
+              <img src="assets/road/road-desert.png" alt="Road through wide desert dune landscape" loading="lazy">
+              <p class="thesis-image-grid-label">Desert dune section</p>
+            </div>
+            <div class="thesis-image-grid-item">
+              <img src="assets/road/road-rocky.png" alt="Road cutting through rocky canyon terrain" loading="lazy">
+              <p class="thesis-image-grid-label">Rocky canyon section</p>
+            </div>
+            <div class="thesis-image-grid-item">
+              <img src="assets/road/road-cliffface.png" alt="Road along vertical cliff face over ocean" loading="lazy">
+              <p class="thesis-image-grid-label">Cliff face section</p>
+            </div>
+            <div class="thesis-image-grid-item">
+              <img src="assets/road/road-cliff.png" alt="Dramatic road along rocky coastal cliff" loading="lazy">
+              <p class="thesis-image-grid-label">Coastal cliff section</p>
+            </div>
+          </div>
         </div>
       `;
 
@@ -1582,6 +1731,8 @@
           renderThesisProject();
         } else if (btn.dataset.project === 'remesh') {
           renderRemeshProject();
+        } else if (btn.dataset.project === 'road') {
+          renderRoadProject();
         } else if (btn.dataset.project === 'assets') {
           renderAssetsProject();
         } else if (btn.dataset.project === 'osm') {
