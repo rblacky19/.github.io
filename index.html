@@ -61,7 +61,7 @@
       height: 192px;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%) translateY(4px);
+      transform: translate(-50%, -50%) translateY(2px);
       filter: grayscale(1);
       cursor: default;
     }
@@ -818,6 +818,7 @@
       .graphics-gallery { columns: 2; }
       .assets-grid { grid-template-columns: 1fr; gap: 48px; }
       .graphics-split { grid-template-columns: 1fr; }
+      .gizmo-wrapper { display: none; }
     }
   </style>
 </head>
@@ -1632,6 +1633,8 @@
   <script type="module">
     import * as THREE from 'three';
     import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+    if (window.innerWidth <= 680) throw new Error('mobile — skip gizmo');
 
     const canvas = document.getElementById('gizmo-canvas');
     const dpr = Math.min(window.devicePixelRatio, 2);
